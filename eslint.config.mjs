@@ -16,15 +16,6 @@ export default defineConfig([
     },
     rules: {
       ...js.configs.recommended.rules,
-      "prettier/prettier": [
-        "error",
-        {
-          singleQuote: true,
-          semi: true,
-          trailingComma: "es5",
-        },
-      ],
-
       quotes: ["error", "double"],
     },
     extends: ["plugin:prettier/recommended"],
