@@ -1,20 +1,22 @@
-import globals from "globals";
-import js from "@eslint/js";
+import { defineConfig } from "eslint/config";
 import html from "@html-eslint/eslint-plugin";
+import js from "@eslint/js";
 
-export default [
-  // Lints your JavaScript files
+export default defineConfig([
+  // ESLint para configurar o JS
   {
     files: ["**/*.js"],
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",
-      globals: globals.browser,
+      globals: {
+        ...globals.browser,
+      },
     },
-    ...js.configs.recommennded,
+    ...js.configs.recommended,
   },
 
-  // Lints your HTML markup
+  // ESLint para configurar o JS
   {
     files: ["**/*.html"],
     plugins: {
@@ -25,13 +27,7 @@ export default [
     },
     rules: {
       ...html.configs.recommended.rules,
+      "@html-eslint/require-img-alt": "error",
     },
   },
-
-  // Lints the JavaScript inside <script> tags
-  {
-    files: ["**/*.html"],
-    processor: "@html-eslint/recommended",
-    ...js.configs.recommended,
-  },
-];
+]);
