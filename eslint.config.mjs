@@ -1,22 +1,24 @@
-import js from "@eslint/js";
 import globals from "globals";
+import pluginJs from "@eslint/js";
+import eslintPluginHtml from "eslint-plugin-html";
 import { defineConfig } from "eslint/config";
-import pluginPrettier from "eslint-plugin-prettier";
 
 export default defineConfig([
   {
-    files: ["**/*.{js,mjs,cjs}"],
+    files: ["**/*.js"],
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",
       globals: globals.browser,
     },
+    ...pluginJs.configs.recommended,
+  },
+  {
+    files: ["**/*.html"],
     plugins: {
-      prettier: pluginPrettier,
+      html: eslintPluginHtml,
     },
-    rules: {
-      ...js.configs.recommended.rules,
-      quotes: ["error", "double"],
-    },
+    processor: "html/html",
+    ...eslintPluginHtml.configs.recommended,
   },
 ]);
