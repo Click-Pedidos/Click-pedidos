@@ -18,6 +18,5 @@ export default defineConfig([
       ...js.configs.recommended.rules,
       quotes: ["error", "double"],
     },
-    extends: ["plugin:prettier/recommended"],
   },
 ]);
