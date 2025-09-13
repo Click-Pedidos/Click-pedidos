@@ -23,7 +23,4 @@ jobs:
         run: npm install
 
       - name: Configurar ESLint
-        run: npx eslint . --ext .js,.html
-
-      - name: Rodar Stylelint (CSS)
-        run: npx stylelint "**/*.css"
+        run: npm run lint

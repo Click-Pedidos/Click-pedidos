@@ -1,11 +1,13 @@
-import { defineConfig } from "eslint/config";
 import html from "@html-eslint/eslint-plugin";
+import htmlParser from "@html-eslint/parser";
 import js from "@eslint/js";
+import globals from "globals";
 
-export default defineConfig([
-  // ESLint para configurar o JS
+export default [
+  // Configuração para arquivos JavaScript (já estava correta)
   {
     files: ["**/*.js"],
+    ...js.configs.recommended,
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",
@@ -13,21 +15,20 @@ export default defineConfig([
         ...globals.browser,
       },
     },
-    ...js.configs.recommended,
   },
 
-  // ESLint para configurar o JS
+  // Configuração para arquivos HTML
   {
     files: ["**/*.html"],
-    plugins: {
-      "@html-eslint": html,
-    },
+    ...html.configs.recommended,
+
     languageOptions: {
-      parser: html.parsers.html,
+      parser: htmlParser,
     },
+
     rules: {
-      ...html.configs.recommended.rules,
-      "@html-eslint/require-img-alt": "error",
+      "html/require-img-alt": "error",
+      "html/no-trailing-spaces": "warn",
     },
   },
-]);
+];
