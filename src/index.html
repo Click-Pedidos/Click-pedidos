@@ -1,15 +1,59 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Click Pedido</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>Click Pedidos</title>
+    <link rel="stylesheet" href="./style/style-index.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <body>
-    <header></header>
-    <section></section>
 
-    <footer></footer>
+  <body>
+    <header class="header">
+      <h1 class="title">Click Pedidos</h1>
+      <p class="subtitle">Sistema de Pedidos Online</p>
+      <p class="description">Selecione como deseja acessar o sistema</p>
+    </header>
+
+    <main class="main-container">
+      <div class="cards-container">
+        <div class="card">
+          <div class="icon-container">🏠</div>
+          <h2>Sou Cliente</h2>
+          <p class="card-text">
+            Faça seu pedido online de forma rápida e prática:
+          </p>
+          <ul>
+            <li>Navegue pelo cardápio</li>
+            <li>Adicione itens ao carrinho</li>
+            <li>Pague com cartão ou PIX</li>
+            <li>Acompanhe seu pedido</li>
+          </ul>
+          <button class="cards-btn">Entrar como cliente</button>
+        </div>
+
+        <div class="card">
+          <div class="icon-container">👥</div>
+          <h2>Sou do Atendimento</h2>
+          <p class="card-text">Gerencie pedidos e atenda seus clientes:</p>
+          <ul>
+            <li>Visualize pedidos em tempo real</li>
+            <li>Gerencie status dos pedidos</li>
+            <li>Notifique clientes</li>
+            <li>Controle da cozinha</li>
+          </ul>
+          <button class="cards-btn">Entrar como Atendente</button>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>Sistema integrado - Pedidos sincronizados em tempo real</p>
+    </footer>
   </body>
 </html>
