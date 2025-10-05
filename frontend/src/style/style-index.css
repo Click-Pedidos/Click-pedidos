@@ -1,107 +1,114 @@
-/* Reset basico */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "inter", sans-serif;
 }
-/* aqui as configurção do body  */
+
 body {
-  background: #f9f9f9;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-/* aqui você mudar as cores da caixa central da pagiana e todas as configuração dela */
-.card {
-  background: #fff;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  width: 280px;
-  text-align: center;
-}
-
-/* Ícone */
-.icone {
-  background: #ffe0e9;
-  color: #f6a700;
-  width: 100px;
-  height: 100px;
-  margin: 0 auto 1rem;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 28px;
-}
-/* configuraçao da logo  imagem somente dela  */
-.icone img {
-  max-width: 100%; /* nunca passa do tamanho da div */
-  max-height: 100%; /* nunca passa do tamanho da div */
-  object-fit: contain; /* mantém proporção sem cortar */
-}
-
-/* Titulo */
-.card h2 {
-  font-size: 18px;
-  margin-bottom: 0.3rem;
-}
-/* paragrafo abaixod o titulo */
-.card p {
-  font-size: 14px;
-  color: #555;
-  margin-bottom: 1rem;
-}
-
-/* Lista */
-.card ul {
-  text-align: left;
-  font-size: 13px;
-  color: #444;
-  margin-bottom: 1.5rem;
-  padding-left: 18px;
-}
-
-/* aqui você mudar somente as cores das bolinhas da lista */
-.card li::marker {
-  color: #f6a700;
-}
-/* Inputs */
-form {
+  background-color: #f9fafb;
+  color: #333;
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  min-height: 100vh;
 }
 
-label {
-  text-align: left;
-  font-size: 13px;
-  color: #333;
+.header {
+  text-align: center;
+  margin-top: 50px;
 }
 
-input {
-  padding: 0.6rem;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+.title {
+  color: #f39c12;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.subtitle {
+  font-size: 19px;
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+.description {
+  font-size: 16px;
+  color: #6c757d;
+  margin-top: 5px;
+}
+
+/* Cards */
+.main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cards-container {
+  display: flex;
+  gap: 55px;
+  margin-top: 50px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 30px;
+  width: 280px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+.icon-container {
+  font-size: 32px;
+  margin-bottom: 15px;
+}
+
+.card h2 {
+  font-size: 19px;
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+
+.card-text {
+  font-size: 15px;
+  color: #555;
+  margin-bottom: 40px;
+}
+
+.card ul {
+  margin-bottom: 25px;
+  text-align: center;
+  padding: 0;
+  color: #444;
+}
+
+.card ul li {
+  margin-bottom: 15px;
   font-size: 14px;
 }
 
-/* Botão */
-button {
-  background: #f6a700;
+.cards-btn {
+  background-color: #f39c12;
   color: white;
-  padding: 0.8rem;
   border: none;
-  border-radius: 6px;
+  padding: 12px;
+  width: 100%;
+  border-radius: 8px;
   cursor: pointer;
-  font-weight: bold;
-  font-size: 14px;
+  font-weight: 600;
   transition: background 0.3s;
 }
 
-button:hover {
-  background: #e09400;
+.cards-btn:hover {
+  background-color: #d68910;
+}
+
+.footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+  color: #6c757d;
 }
