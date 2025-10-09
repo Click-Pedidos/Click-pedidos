@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Click Pedidos</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topo">
+    <button class="voltar">← Voltar</button>
+    <h1>Click Pedidos</h1>
+    <button class="compartilhar">Compartilhar</button>
+  </header>
+
+  <nav class="menu">
+    <button class="ativo">Pedidos</button>
+    <button>Produtos</button>
+  </nav>
+
+  <main>
+
+    <section class="painel">
+      <h2>Painel de Pedidos</h2>
+      <div class="filtros">
+        <button class="ativo">Todos (2)</button>
+        <button>Pendentes (1)</button>
+        <button>Preparando (0)</button>
+        <button>Prontos (1)</button>
+        <button>Finalizados (0)</button>
+      </div>
+
+      <!-- Pedido 001 -->
+      <div class="pedido">
+        <div class="cabecalho-pedido">
+          <h3>Pedido #001</h3>
+          <span class="status pendente">Pendente</span>
+        </div>
+        <p><strong>Cliente:</strong> Maria Silva</p>
+        <p><strong>Pagamento:</strong> Cartão</p>
+        <p><strong>Horário:</strong> 22:11:30</p>
+
+        <ul>
+          <li>2x Burger Clássico <span>R$ 51,80</span></li>
+          <li>1x Batata Frita <span>R$ 12,90</span></li>
+        </ul>
+
+        <p class="total">Total: <span>R$ 64,70</span></p>
+        <button class="btn btn-acao">Iniciar Preparo</button>
+      </div>
+
+      <!-- Pedido 002 -->
+      <div class="pedido">
+        <div class="cabecalho-pedido">
+          <h3>Pedido #002</h3>
+          <span class="status pronto">Pronto</span>
+        </div>
+        <p><strong>Cliente:</strong> João Santos</p>
+        <p><strong>Pagamento:</strong> PIX</p>
+        <p><strong>Horário:</strong> 22:26:30</p>
+
+        <ul>
+          <li>1x Pizza Margherita <span>R$ 35,90</span></li>
+        </ul>
+
+        <p class="total">Total: <span>R$ 35,90</span></p>
+
+        <div class="acoes">
+          <button class="btn btn-acao">Finalizar Pedido</button>
+          <button class="btn btn-secundario">Avisar Cliente</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
