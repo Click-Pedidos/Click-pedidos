@@ -9,3 +9,4 @@ O aplicativo permite que o cliente:
 4. Receba uma **notificação quando o pedido estiver pronto** para retirada.  
 
 Com o **Click Pedidos**, o processo de compra se torna rápido, prático e totalmente digital, oferecendo uma experiência ágil tanto para o cliente quanto para o estabelecimento.
+#tela finalizada
