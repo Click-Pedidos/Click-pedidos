@@ -1,10 +1,13 @@
 import db from "../db/db_config";
 
+// função apenas para interegir com o DB
+// Data Access Layer
+
 // Cria um novo produto
-export function createProduto(produtoData: any) {
+export function createProdutoDB(produtoData: any) {
   // SQL para inserir os dados. Note que estamos passando um objeto '?'
   const sql = `INSERT INTO Produto (nome, preco, imagem, descricao, estoque, ativo, categoria)
-               VALUES (?, ?, ?, ?)`;
+               VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
   const values = [
     produtoData.nome,
@@ -19,7 +22,7 @@ export function createProduto(produtoData: any) {
   return new Promise((resolve, reject) => {
     db.query(sql, values, (error: any, results: any) => {
       if (error) {
-        return console.error("Erro ao salvar", error);
+        return reject(error);
       }
 
       resolve({ id: results.insertId, ...produtoData });
@@ -28,7 +31,7 @@ export function createProduto(produtoData: any) {
 }
 
 // Função de exemplo para buscar um produto
-export function getProdutoById(id: any) {
+export function getProdutoByIdDB(id: any) {
   const sql = `SELECT id, nome, preco, imagem, descricao
                FROM Produto
                WHERE id = ?`;
@@ -36,7 +39,7 @@ export function getProdutoById(id: any) {
   return new Promise((resolve, reject) => {
     db.query(sql, [id], (error: any, results: any) => {
       if (error) {
-        return console.error("Erro ao salvar", error);
+        return reject(error);
       }
 
       resolve(results[0] || null);
