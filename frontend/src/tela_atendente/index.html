@@ -7,19 +7,20 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="topo">
-    <button class="voltar">← Voltar</button>
-    <h1>Click Pedidos</h1>
-    <button class="compartilhar">Compartilhar</button>
+  <header class="logo-header">
+    <div class="img-">
+      <img width="120" height="120" src="img/img-click-pedidos.jpg" alt="logo">
+    </div>
   </header>
-
+<div class="boss">
+  <button class="voltar">← Voltar</button>
+</div>
   <nav class="menu">
     <button class="ativo">Pedidos</button>
     <button>Produtos</button>
   </nav>
 
   <main>
-
     <section class="painel">
       <h2>Painel de Pedidos</h2>
       <div class="filtros">
@@ -27,17 +28,17 @@
         <button>Pendentes (1)</button>
         <button>Preparando (0)</button>
         <button>Prontos (1)</button>
-        <button>Finalizados (0)</button>
+        <button>Finalizados  (0)</button>
       </div>
 
       <!-- Pedido 001 -->
       <div class="pedido">
-        <div class="cabecalho-pedido">
+        <div class="pedido-hover">
           <h3>Pedido #001</h3>
           <span class="status pendente">Pendente</span>
         </div>
         <p><strong>Cliente:</strong> Maria Silva</p>
-        <p><strong>Pagamento:</strong> Cartão</p>
+        <p><strong>Pagamento:</strong> Cartão debito</p>
         <p><strong>Horário:</strong> 22:11:30</p>
 
         <ul>
@@ -53,7 +54,7 @@
       <div class="pedido">
         <div class="cabecalho-pedido">
           <h3>Pedido #002</h3>
-          <span class="status pronto">Pronto</span>
+          <button class="status pronto">Pronto</button>
         </div>
         <p><strong>Cliente:</strong> João Santos</p>
         <p><strong>Pagamento:</strong> PIX</p>
@@ -66,7 +67,7 @@
         <p class="total">Total: <span>R$ 35,90</span></p>
 
         <div class="acoes">
-          <button class="btn btn-acao">Finalizar Pedido</button>
+          <button class="btn2-acao">Finalizar Pedido</button>
           <button class="btn btn-secundario">Avisar Cliente</button>
         </div>
       </div>
@@ -74,3 +75,4 @@
   </main>
 </body>
 </html>
+
