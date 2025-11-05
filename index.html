@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Click Pedido - Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top-bar">
+    <button class="btn-voltar">← Voltar</button>
+    <img src="imagens/logo.jpeg" alt="Click Pedido" class="logo">
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active"><i class="icon">📄</i>Pedidos</button>
+    <button class="tab"><i class="icon">📦</i>Produtos</button>
+    <button class="tab"><i class="icon">📊</i>Estoque</button>
+  </nav>
+
+  <section class="sub-tabs">
+    <button class="sub-tab active"><i class="icon">🛒</i>Produtos do Cardápio</button>
+    <button class="sub-tab"><i class="icon">🎯</i>Itens de Estoque</button>
+  </section>
+   <div class="dashboard">
+    <div class="card-total">
+      <div class="card-header">
+        <span>Total de Produtos</span>
+        <i class="fa-solid fa-circle-info icon"></i>
+      </div>
+      <div class="card-value">9</div>
+    </div>
+
+    <div class="card sem-estoque">
+      <div class="card-header">
+        <span>Sem Estoque</span>
+        <i class="fa-regular fa-circle-xmark icon red"></i>
+      </div>
+      <div class="card-value red">1</div>
+    </div>
+
+    <div class="card estoque-baixo">
+      <div class="card-header">
+        <span>Estoque Baixo</span>
+        <i class="fa-solid fa-triangle-exclamation icon orange"></i>
+      </div>
+      <div class="card-value orange">2</div>
+    </div>
+
+    <div class="card em-estoque">
+      <div class="card-header">
+        <span>Em Estoque</span>
+        <i class="fa-regular fa-circle-check icon green"></i>
+      </div>
+      <div class="card-value green">6</div>
+    </div>
+  </div>
+<div class="container">
+
+  <!-- Card -->
+    <div class="card">
+      <img src="imagens/burg.jpeg" alt="Burger Clássico">
+      <div class="status disponivel">Disponível</div>
+      <h2>Burger Clássico</h2>
+      <p><strong>Estoque atual:</strong> 25 unidades</p>
+      <p><strong>Estoque mínimo:</strong> 10 unidades</p>
+      <button>Editar Estoque</button>
+    </div>
+
+    <div class="card">
+      <img src="imagens/pizza.jpeg" alt="Pizza Margherita">
+      <div class="status controlado">Controlado</div>
+      <h2>Pizza Margherita</h2>
+      <p><strong>Estoque atual:</strong> 15 unidades</p>
+      <p><strong>Estoque mínimo:</strong> 10 unidades</p>
+      <button>Editar Estoque</button>
+    </div>
+
+    <div class="card">
+      <img src="imagens/sand.jpeg" alt="Sanduíche Natural">
+      <div class="status baixo">Estoque Baixo</div>
+      <h2>Sanduíche Natural</h2>
+      <p><strong>Estoque atual:</strong> 8 unidades</p>
+      <p><strong>Estoque mínimo:</strong> 10 unidades</p>
+      <button>Editar Estoque</button>
+    </div>
+
+    <div class="card">
+      <img src="imagens/batata.jpeg" alt="Batata Frita">
+      <div class="status disponivel">Disponível</div>
+      <h2>Batata Frita</h2>
+      <p><strong>Estoque atual:</strong> 30 unidades</p>
+      <p><strong>Estoque mínimo:</strong> 15 unidades</p>
+      <button>Editar Estoque</button>
+    </div>
+
+    <div class="card">
+      <img src="imagens/coca.jpeg" alt="Coca-Cola">
+      <div class="status disponivel">Disponível</div>
+      <h2>Coca-Cola</h2>
+      <p><strong>Estoque atual:</strong> 50 unidades</p>
+      <p><strong>Estoque mínimo:</strong> 20 unidades</p>
+      <button>Editar Estoque</button>
+    </div>
+
+    <div class="card">
+      <img src="imagens/suco.jpeg" alt="Suco Natural">
+      <div class="status baixo">Estoque Baixo</div>
+      <h2>Suco Natural</h2>
+      <p><strong>Estoque atual:</strong> 3 unidades</p>
+      <p><strong>Estoque mínimo:</strong> 12 unidades</p>
+      <button>Editar Estoque</button>
+    </div>
+
+    <div class="card">
+      <img src="imagens/agua.jpeg" alt="Água Mineral">
+      <div class="status esgotado">Sem Estoque</div>
+      <h2>Água Mineral</h2>
+      <p><strong>Estoque atual:</strong> 0 unidades</p>
+      <p><strong>Estoque mínimo:</strong> 6 unidades</p>
+      <button>Editar Estoque</button>
+    </div>
+
+    <div class="card">
+      <img src="imagens/cafe.jpeg" alt="Café Expresso">
+      <div class="status disponivel">Disponível</div>
+      <h2>Café Expresso</h2>
+      <p><strong>Estoque atual:</strong> 18 unidades</p>
+      <p><strong>Estoque mínimo:</strong> 10 unidades</p>
+      <button>Editar Estoque</button>
+    </div>
+
+    <div class="card">
+      <img src="imagens/milkshake.jpg" alt="Milkshake">
+      <div class="status disponivel">Disponível</div>
+      <h2>Milkshake</h2>
+      <p><strong>Estoque atual:</strong> 12 unidades</p>
+      <p><strong>Estoque mínimo:</strong> 8 unidades</p>
+      <button>Editar Estoque</button>
+    </div>
+
+  </div>
+</body>
+</html>
