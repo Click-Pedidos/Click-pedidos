@@ -1,0 +1,557 @@
+
+:root {
+    --cor-primaria: #ff9800; /* Laranja principal do logo e botões */
+    --cor-secundaria: #f2f2f2; /* Fundo cinza claro */
+    --cor-texto: #333;
+    --cor-borda: #ccc;
+    --cor-card-fundo: #fff;
+    --cor-tag-comida: #66bb6a; /* Verde para tag Comida */
+    --cor-tag-bebida: #29b6f6; /* Azul para tag Bebida */
+    --cor-cinza-claro: #f8f8f8;
+    --cor-cinza-escuro-nav: #e9e9e9;
+    --cor-dicas-fundo: #fafafa;
+    --cor-borda-upload: #ddd;
+    --cor-texto-cinza-claro: #999;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: var(--cor-secundaria);
+    color: var(--cor-texto);
+    line-height: 1.5;
+    padding: 0; /* Remove padding do body */
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    min-height: 100vh; /* Ocupa a altura da tela */
+    display: flex;
+    flex-direction: column;
+}
+
+/* HEADER AJUSTADO (Logo + Botão Voltar)     */
+
+.header {
+    position: relative; /* Permite posicionar o botão dentro */
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Mantém a logo centralizada */
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--cor-borda);
+    background-color: #fff;
+}
+
+/* Botão de voltar fixo à esquerda */
+.btn-voltar {
+    position: absolute;
+    left: 20px; /* encosta no canto esquerdo */
+    text-decoration: none;
+    color: var(--cor-texto);
+    padding: 8px 15px;
+    border: 1px solid var(--cor-borda);
+    border-radius: 4px;
+    background: #eee;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: background-color 0.2s, color 0.2s;
+    cursor: pointer;
+}
+
+.btn-voltar:hover {
+    color: var(--cor-primaria);
+    background-color: #f9f9f9;
+}
+
+/* Logo continua centralizada */
+.logo img {
+    height: 70px;
+    max-width: 100%;
+    display: block;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .logo img {
+        height: 60px;
+    }
+
+    .btn-voltar {
+        left: 10px;
+        font-size: 0.9rem;
+        padding: 6px 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo img {
+        height: 50px;
+    }
+
+    .btn-voltar {
+        left: 8px;
+        font-size: 0.8rem;
+        padding: 5px 8px;
+    }
+}
+
+
+.nav-geral {
+    display: flex;
+    justify-content: center;
+    background-color: var(--cor-cinza-claro); /* Fundo claro da nav */
+    padding: 15px 0;
+    border-bottom: 1px solid var(--cor-borda);
+}
+
+.nav-item-box {
+    background-color: #fff;
+    border: 1px solid var(--cor-borda);
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--cor-texto);
+    display: inline-block;
+    min-width: 120px; /* Largura mínima para as caixas */
+    text-align: center;
+}
+
+.nav-item-box:first-child {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-right: none;
+}
+
+.nav-item-box:last-child {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.nav-item-box.active {
+    background-color: var(--cor-cinza-escuro-nav);
+    border-color: var(--cor-cinza-escuro-nav);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); /* Sutil sombreamento interno */
+}
+
+/* RODAPÉ                                    */
+
+.footer {
+    padding: 10px 30px;
+    font-size: 0.8rem;
+    color: var(--cor-texto-cinza-claro);
+    border-top: 1px solid var(--cor-borda);
+    margin-top: auto; /* Empurra para o final */
+}
+
+
+/* TELA DE GERENCIAR PRODUTOS                */
+
+.tela-content {
+    padding: 20px 30px 30px;
+    flex-grow: 1;
+}
+
+.header-gerenciamento {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.titulo-gerenciamento {
+    font-size: 1.5rem;
+    color: var(--cor-texto); /* Título na imagem é preto/cinza escuro */
+    font-weight: 500;
+}
+
+.btn-novo-produto {
+    background-color: var(--cor-primaria);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+}
+
+.btn-novo-produto i {
+    margin-right: 5px;
+}
+
+/* Busca e Filtros */
+.busca-e-filtros {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.input-busca {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: 1px solid var(--cor-borda);
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: var(--cor-card-fundo);
+}
+
+.filtros {
+    display: flex;
+    /* Os filtros parecem ser apenas botões escuros com texto branco */
+}
+
+.filtro-item {
+    padding: 8px 12px;
+    border: 1px solid var(--cor-texto);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--cor-texto);
+    background-color: #fff;
+    font-weight: bold;
+    margin-left: -1px; /* Para simular a junção */
+}
+.filtro-item:first-child {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    margin-left: 0;
+}
+.filtro-item:last-child {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.filtro-item.ativo-filtro {
+    background-color: var(--cor-texto);
+    color: white;
+    border-color: var(--cor-texto);
+}
+
+/* Lista de Produtos (Grid) */
+.lista-produtos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.card-produto {
+    background-color: var(--cor-card-fundo);
+    border: 1px solid var(--cor-borda);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.img-produto {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.info-produto {
+    padding: 15px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.nome-produto {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tag-produto {
+    font-size: 0.7rem;
+    padding: 3px 8px;
+    border-radius: 4px;
+    color: white;
+    font-weight: normal;
+}
+
+.descricao-produto {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 10px;
+    min-height: 2.7em; 
+}
+
+.preco-produto {
+    font-size: 1.2rem;
+    color: var(--cor-texto);
+    font-weight: bold;
+    margin-top: auto;
+    margin-bottom: 10px; 
+}
+
+.acoes-produto {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+}
+
+.btn-acao {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 5px 10px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    text-decoration: none; 
+}
+
+
+.btn-acao:not(.lixeira) {
+    color: var(--cor-texto);
+    font-weight: 500;
+}
+
+.btn-acao.lixeira {
+    color: #f44336; 
+    font-size: 1rem;
+    padding: 5px;
+}
+
+.btn-acao i {
+    margin-right: 5px;
+}
+
+
+
+/* TELA DE CADASTRO DE PRODUTO               */
+
+
+.tela-cadastro {
+    display: none; /* Escondido por padrão, ativado pelo JS */
+}
+
+.header-form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.btn-voltar-form {
+    text-decoration: none;
+    color: var(--cor-texto);
+    padding: 8px 15px;
+    border: 1px solid var(--cor-borda);
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.titulo-form {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--cor-texto);
+}
+
+.acoes-form {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.visualizar-link {
+    font-size: 0.9rem;
+    color: var(--cor-primaria);
+    cursor: pointer;
+}
+
+.btn-salvar-produto {
+    background-color: var(--cor-primaria);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Layout do Formulário (Form + Dicas) */
+.conteudo-form {
+    display: flex;
+    gap: 30px;
+}
+
+.form-produto {
+    flex: 2; 
+}
+
+.dicas-form {
+    flex: 1; 
+    background-color: var(--cor-dicas-fundo);
+    padding: 20px;
+    border-radius: 4px; /* Mais quadrado como na imagem */
+    border: 1px solid var(--cor-borda);
+    height: fit-content;
+}
+
+/* Seção do Formulário */
+.subtitulo-form {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--cor-texto);
+    margin-top: 25px;
+    margin-bottom: 15px;
+    padding-bottom: 0px; /* Sem borda embaixo do título 'Informações Básicas' */
+}
+.subtitulo-form:first-of-type {
+    margin-top: 0;
+}
+
+.subtitulo-form i {
+    color: var(--cor-tag-comida); /* Cor de check */
+    margin-right: 5px;
+}
+
+.label-form {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+.input-form, .textarea-form, select.input-form {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--cor-borda);
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: #fff;
+}
+
+.input-form::placeholder {
+    color: var(--cor-texto-cinza-claro);
+    font-style: italic;
+}
+
+.input-preco {
+    max-width: 150px;
+    background-color: var(--cor-cinza-claro) !important; /* Mais cinza como na imagem */
+    font-weight: bold;
+    color: var(--cor-texto);
+}
+
+.textarea-form {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.contador-caracteres {
+    text-align: right;
+    font-size: 0.8rem;
+    color: var(--cor-texto-cinza-claro);
+    margin-top: 5px;
+}
+
+/* Upload Area */
+.upload-area {
+    border: 2px dashed var(--cor-borda-upload);
+    border-radius: 8px;
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    background-color: #fcfcfc;
+    margin-top: 15px;
+}
+
+.icone-upload {
+    font-size: 2rem;
+    color: var(--cor-texto-cinza-claro);
+    margin-bottom: 10px;
+}
+
+.upload-area p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.ou-upload {
+    font-size: 0.8rem;
+    color: var(--cor-texto-cinza-claro);
+    margin: 15px 0 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.ou-upload::before, .ou-upload::after {
+    content: "";
+    flex-grow: 1;
+    height: 1px;
+    background: var(--cor-borda);
+    display: inline-block;
+    vertical-align: middle;
+    width: 40px;
+    margin: 0 10px;
+}
+
+.btn-selecionar-arquivo {
+    background-color: #fff;
+    color: var(--cor-texto);
+    padding: 8px 15px;
+    border: 1px solid var(--cor-borda);
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* Dicas */
+.subtitulo-dicas {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--cor-texto);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--cor-borda);
+}
+
+.dica-item {
+    margin-bottom: 20px;
+}
+
+.dica-titulo {
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 3px;
+    color: var(--cor-texto);
+}
+
+.dica-texto {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.nota-obrigatorio {
+    font-size: 0.8rem;
+    color: var(--cor-texto-cinza-claro);
+    margin-top: 20px;
+    padding-top: 15px;
+}
+
+.nota-obrigatorio i {
+    color: var(--cor-texto-cinza-claro);
+    margin-right: 5px;
+}

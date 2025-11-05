@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interface CLICK PEDIDO Completa</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <a href="#" class="btn-voltar">← Voltar</a>
+            <div class="logo">
+                <img src="imagens/logo.jpeg"  alt="Logo CLICK PEDIDO">
+            </div>
+        </header>
+
+        <nav class="nav-geral">
+            <div class="nav-item nav-item-box" id="nav-pedidos">
+                Pedidos
+            </div>
+            <div class="nav-item nav-item-box active" id="nav-produtos">
+                Produtos
+            </div>
+        </nav>
+
+        <main class="tela-content tela-produtos" id="tela-produtos">
+            <div class="header-gerenciamento">
+                <h1 class="titulo-gerenciamento">Gerenciar Produtos</h1>
+                <button class="btn-novo-produto" id="btn-novo-produto"><i class="fas fa-plus"></i> Novo Produto</button>
+            </div>
+
+            <div class="busca-e-filtros">
+                <input type="text" placeholder="Buscar produtos..." class="input-busca">
+                <div class="filtros">
+                    <span class="filtro-item ativo-filtro"> (📦 8)</span>
+                    <span class="filtro-item"> (🍕 4)</span>
+                    <span class="filtro-item"> (🥃 4)</span>
+                </div>
+            </div>
+
+            <div class="lista-produtos">
+                <div class="card-produto">
+                    <img src="imagens/burg.jpeg" alt="Burger Clássico" class="img-produto">
+                    <div class="info-produto">
+                        <h2 class="nome-produto">Burger Clássico <span class="tag-produto comida-tag">Comida</span></h2>
+                        <p class="descricao-produto">Burger artesanal com carne bovina, queijo, alface e tomate</p>
+                        <p class="preco-produto">R$ 25,90</p>
+                        <div class="acoes-produto">
+                            <button class="btn-acao"><i class="fas fa-edit"></i> Editar</button>
+                            <button class="btn-acao lixeira"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-produto">
+                    <img src="imagens/pizza.jpeg" alt="Pizza Margherita" class="img-produto">
+                    <div class="info-produto">
+                        <h2 class="nome-produto">Pizza Margherita <span class="tag-produto comida-tag">Comida</span></h2>
+                        <p class="descricao-produto">Pizza tradicional com molho de tomate, mussarela e manjericão</p>
+                        <p class="preco-produto">R$ 35,90</p>
+                        <div class="acoes-produto">
+                            <button class="btn-acao"><i class="fas fa-edit"></i> Editar</button>
+                            <button class="btn-acao lixeira"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-produto">
+                    <img src="imagens/sand.jpeg" alt="Sanduíche Natural" class="img-produto">
+                    <div class="info-produto">
+                        <h2 class="nome-produto">Sanduíche Natural <span class="tag-produto comida-tag">Comida</span></h2>
+                        <p class="descricao-produto">Sanduíche integral com frango, vegetais frescos e molho especial</p>
+                        <p class="preco-produto">R$ 18,90</p>
+                        <div class="acoes-produto">
+                            <button class="btn-acao"><i class="fas fa-edit"></i> Editar</button>
+                            <button class="btn-acao lixeira"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                </div>
+                
+                 <div class="card-produto">
+                    <img src="imagens/batata.jpeg" alt="Batata Frita" class="img-produto">
+                    <div class="info-produto">
+                        <h2 class="nome-produto">Batata Frita <span class="tag-produto comida-tag">Comida</span></h2>
+                        <p class="descricao-produto">Porção generosa de batatas fritas crocantes</p>
+                        <p class="preco-produto">R$ 12,90</p>
+                        <div class="acoes-produto">
+                            <button class="btn-acao"><i class="fas fa-edit"></i> Editar</button>
+                            <button class="btn-acao lixeira"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-produto">
+                    <img src="imagens/coca.jpeg" alt="Coca-Cola" class="img-produto">
+                    <div class="info-produto">
+                        <h2 class="nome-produto">Coca-Cola <span class="tag-produto bebida-tag">Bebida</span></h2>
+                        <p class="descricao-produto">Refrigerante gelado 350ml</p>
+                        <p class="preco-produto">R$ 5,90</p>
+                        <div class="acoes-produto">
+                            <button class="btn-acao"><i class="fas fa-edit"></i> Editar</button>
+                            <button class="btn-acao lixeira"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                </div>
+                 <div class="card-produto">
+                    <img src="imagens/suco.jpeg" alt="Suco Natural" class="img-produto">
+                    <div class="info-produto">
+                        <h2 class="nome-produto">Suco Natural <span class="tag-produto bebida-tag">Bebida</span></h2>
+                        <p class="descricao-produto">Suco natural de frutas variadas 400ml</p>
+                        <p class="preco-produto">R$ 8,90</p>
+                        <div class="acoes-produto">
+                            <button class="btn-acao"><i class="fas fa-edit"></i> Editar</button>
+                            <button class="btn-acao lixeira"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                </div>
+                 <div class="card-produto">
+                    <img src="imagens/agua.jpeg" alt="Água Mineral" class="img-produto">
+                    <div class="info-produto">
+                        <h2 class="nome-produto">Água Mineral <span class="tag-produto bebida-tag">Bebida</span></h2>
+                        <p class="descricao-produto">Água mineral sem gás 500ml</p>
+                        <p class="preco-produto">R$ 3,50</p>
+                        <div class="acoes-produto">
+                            <button class="btn-acao"><i class="fas fa-edit"></i> Editar</button>
+                            <button class="btn-acao lixeira"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                </div>
+                 <div class="card-produto">
+                    <img src="imagens/cafe.jpeg" alt="Café Expresso" class="img-produto">
+                    <div class="info-produto">
+                        <h2 class="nome-produto">Café Expresso <span class="tag-produto bebida-tag">Bebida</span></h2>
+                        <p class="descricao-produto">Café expresso tradicional</p>
+                        <p class="preco-produto">R$ 4,50</p>
+                        <div class="acoes-produto">
+                            <button class="btn-acao"><i class="fas fa-edit"></i> Editar</button>
+                            <button class="btn-acao lixeira"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <main class="tela-content tela-cadastro" id="tela-cadastro">
+            <div class="header-form">
+                <a href="#" class="btn-voltar-form" id="btn-voltar-cadastro">← Voltar</a>
+                <h1 class="titulo-form">Cadastro de Produto</h1>
+                <div class="acoes-form">
+                    <span class="visualizar-link">Visualizar</span>
+                    <button class="btn-salvar-produto">Salvar Produto</button>
+                </div>
+            </div>
+
+            <div class="conteudo-form">
+                <form class="form-produto">
+                    <section class="secao-form informacoes-basicas">
+                        <h2 class="subtitulo-form"><i class="fas fa-check-circle"></i> Informações Básicas</h2>
+                        
+                        <label for="nome" class="label-form">Nome do Produto *</label>
+                        <input type="text" id="nome" placeholder="Ex: Coxinha de Frango" class="input-form" maxlength="60">
+                        <p class="contador-caracteres nome-contador">0/60 caracteres</p>
+                        
+                        <label for="categoria" class="label-form">Categoria *</label>
+                        <select id="categoria" class="input-form">
+                            <option value="Comida">Comida</option>
+                            <option value="Bebida">Bebida</option>
+                        </select>
+                        
+                        <label for="preco" class="label-form">Preço *</label>
+                        <input type="text" id="preco" value="0.00" class="input-form input-preco">
+                        
+                        <h2 class="subtitulo-form">Descrição & Informações</h2>
+
+                        <label for="descricao" class="label-form">Descrição para o Cliente *</label>
+                        <textarea id="descricao" placeholder="Breve descrição para o cliente" class="textarea-form" maxlength="300"></textarea>
+                        <p class="contador-caracteres desc-contador">0/300 caracteres</p>
+
+                        <h2 class="subtitulo-form">Imagens do Produto</h2>
+                        
+                        <div class="upload-area">
+                            <i class="fas fa-upload icone-upload"></i>
+                            <p>Arraste e solte sua imagem aqui</p>
+                            <p class="ou-upload">ou clique para selecionar arquivo</p>
+                            <p class="formatos-upload">JPG, PNG, HEIC, até 5MB</p>
+                            <button type="button" class="btn-selecionar-arquivo">Selecionar Arquivo</button>
+                        </div>
+                    </section>
+                </form>
+
+                <aside class="dicas-form">
+                    <h2 class="subtitulo-dicas">Dicas</h2>
+                    
+                    <div class="dica-item">
+                        <h3 class="dica-titulo">Nome do Produto</h3>
+                        <p class="dica-texto">Use nomes claros e descritivos</p>
+                    </div>
+
+                    <div class="dica-item">
+                        <h3 class="dica-titulo">Preço</h3>
+                        <p class="dica-texto">Considere custos e margem de lucro</p>
+                    </div>
+
+                    <div class="dica-item">
+                        <h3 class="dica-titulo">Imagens</h3>
+                        <p class="dica-texto">Use fotos bem iluminadas e atrativas</p>
+                    </div>
+
+                    <p class="nota-obrigatorio"><i class="fas fa-star-of-life"></i> Campos marcados com * são obrigatórios</p>
+                </aside>
+            </div>
+        </main>
+        
+        <footer class="footer">
+            <p>Gerenciar cookies ou desativar</p>
+        </footer>
+    </div>
+
+    <script>
+        // Função para alternar entre as duas telas (simulação de navegação)
+        function alternarTela(tela) {
+            document.getElementById('tela-produtos').style.display = 'none';
+            document.getElementById('tela-cadastro').style.display = 'none';
+
+            if (tela === 'produtos') {
+                document.getElementById('tela-produtos').style.display = 'block';
+                document.getElementById('nav-produtos').classList.add('active');
+                document.getElementById('nav-pedidos').classList.remove('active');
+            } else if (tela === 'cadastro') {
+                document.getElementById('tela-cadastro').style.display = 'block';
+                document.getElementById('nav-produtos').classList.add('active');
+                document.getElementById('nav-pedidos').classList.remove('active');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Eventos de clique para alternar
+            document.getElementById('btn-novo-produto').addEventListener('click', () => alternarTela('cadastro'));
+            document.getElementById('btn-voltar-cadastro').addEventListener('click', (e) => {
+                e.preventDefault();
+                alternarTela('produtos');
+            });
+            document.getElementById('nav-produtos').addEventListener('click', () => alternarTela('produtos'));
+            document.getElementById('nav-pedidos').addEventListener('click', () => alternarTela('produtos'));
+            
+            // Lógica para contagem de caracteres (simulação)
+            const nomeInput = document.getElementById('nome');
+            const descTextarea = document.getElementById('descricao');
+            const nomeContador = document.querySelector('.nome-contador');
+            const descContador = document.querySelector('.desc-contador');
+
+            if (nomeInput) {
+                nomeInput.addEventListener('input', () => {
+                    nomeContador.textContent = `${nomeInput.value.length}/60 caracteres`;
+                });
+                nomeContador.textContent = `${nomeInput.value.length}/60 caracteres`; // Valor inicial
+            }
+
+            if (descTextarea) {
+                descTextarea.addEventListener('input', () => {
+                    descContador.textContent = `${descTextarea.value.length}/300 caracteres`;
+                });
+            }
+
+            // Inicia na tela de produtos (como na imagem)
+            alternarTela('produtos'); 
+        });
+    </script>
+</body>
+</html>
