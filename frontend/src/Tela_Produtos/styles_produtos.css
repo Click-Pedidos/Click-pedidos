@@ -77,36 +77,10 @@ header {
   font-size: 1rem;
 }
 
-.nome-cliente {
+.carrinho-container {
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
+  justify-content: flex-end;
   margin-top: 15px;
-  gap: 10px;
-}
-
-.nome-cliente label {
-  font-size: 1rem;
-  color: #333;
-  margin-right: 5px;
-}
-
-.nome-cliente input {
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  flex-grow: 1;
-  font-size: 0.9rem;
-  min-height: 40px;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-}
-
-.nome-cliente input:focus {
-  outline: none;
-  border-color: #f59e0b;
-  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.1);
 }
 
 .carrinho-btn {
@@ -1282,6 +1256,32 @@ button:hover {
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+.campo-nome-pagamento {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.campo-nome-pagamento label {
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.95rem;
+}
+
+.campo-nome-pagamento input {
+  padding: 12px 15px;
+  border: 2px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.campo-nome-pagamento input:focus {
+  outline: none;
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
 }
 
 .valor-pagar {

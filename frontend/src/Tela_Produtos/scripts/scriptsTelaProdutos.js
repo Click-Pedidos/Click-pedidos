@@ -331,16 +331,6 @@ function configurarModal() {
 
 // Finalizar pedido
 function finalizarPedido() {
-  const nomeCliente = document.getElementById('nome').value.trim();
-  
-  if (!nomeCliente) {
-    mostrarNotificacao('Por favor, digite seu nome antes de finalizar o pedido.', 'erro');
-    modal.style.display = 'none';
-    document.body.style.overflow = 'auto';
-    document.getElementById('nome').focus();
-    return;
-  }
-  
   if (carrinho.length === 0) {
     mostrarNotificacao('Seu carrinho está vazio!', 'erro');
     return;
@@ -354,7 +344,6 @@ function finalizarPedido() {
   
   // Preencher dados do modal de pagamento
   valorPagamentoSpan.textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
-  nomeClientePagamentoSpan.textContent = nomeCliente;
   numeroPedidoSpan.textContent = numeroPedido;
   
   // Fechar modal do carrinho e abrir modal de pagamento
@@ -411,9 +400,6 @@ function configurarModalPagamento() {
     
     // Mostrar mensagem de sucesso
     mostrarNotificacao('✅ Pedido realizado com sucesso! Aguarde a confirmação.', 'sucesso');
-    
-    // Limpar nome (opcional)
-    // document.getElementById('nome').value = '';
   });
   
   // Cancelar pagamento
