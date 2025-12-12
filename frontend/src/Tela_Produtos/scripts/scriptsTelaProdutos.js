@@ -1,4 +1,5 @@
-// Carrinho de compras
+// Produtos e Carrinho
+let produtosCardapio = [];
 let carrinho = [];
 let pedidosFinalizados = [];
 
@@ -38,6 +39,9 @@ const acompanhamentoVazioDiv = document.getElementById('acompanhamentoVazio');
 
 // Inicialização
 document.addEventListener("DOMContentLoaded", function () {
+  // Carregar produtos do localStorage primeiro
+  carregarProdutosCardapio();
+  
   // Configurar as abas
   configurarAbas();
   
@@ -65,12 +69,17 @@ document.addEventListener("DOMContentLoaded", function () {
   // Iniciar acompanhamento em tempo real
   iniciarAcompanhamentoTempoReal();
   
-  // Escutar mudanças do localStorage em outras abas/janelas (atendimento)
+  // Escutar mudanças do localStorage em outras abas/janelas
   window.addEventListener('storage', function(e) {
     if (e.key === 'pedidosFinalizados') {
       carregarPedidosFinalizados();
       renderizarPedidosAnteriores();
       atualizarAcompanhamentoTempoReal();
+    }
+    
+    // Atualizar produtos quando modificados no atendimento
+    if (e.key === 'produtosCardapio') {
+      carregarProdutosCardapio();
     }
   });
 });
@@ -865,4 +874,138 @@ function calcularTempoDecorrido(dataISO) {
     const minutos = Math.floor((diff % 3600) / 60);
     return `Há ${horas}h${minutos}min`;
   }
+}
+
+// ============================================
+// SISTEMA DE PRODUTOS DINÂMICOS
+// ============================================
+
+// Produtos padrão (hardcoded)
+const produtosPadrao = [
+  {
+    id: 'default-1',
+    nome: 'Burger Clássico',
+    categoria: 'comidas',
+    preco: '25.90',
+    descricao: 'Burger artesanal com carne bovina, queijo, alface e tomate',
+    imagem: 'img_produto/photo-1568901346375-23c9450c58cd.avif',
+    estoque: 999,
+    padrao: true
+  },
+  {
+    id: 'default-2',
+    nome: 'Pizza Margherita',
+    categoria: 'comidas',
+    preco: '35.90',
+    descricao: 'Pizza tradicional com molho de tomate, mussarela e manjericão',
+    imagem: 'img_produto/photo-1593560708920-61dd98c46a4e.avif',
+    estoque: 999,
+    padrao: true
+  },
+  {
+    id: 'default-3',
+    nome: 'Sanduíche Natural',
+    categoria: 'comidas',
+    preco: '18.90',
+    descricao: 'Sanduíche integral com frango, vegetais frescos e molho especial',
+    imagem: 'img_produto/photo-1528735602780-2552fd46c7af.avif',
+    estoque: 999,
+    padrao: true
+  },
+  {
+    id: 'default-4',
+    nome: 'Batata Frita',
+    categoria: 'comidas',
+    preco: '12.90',
+    descricao: 'Porção generosa de batatas fritas crocantes',
+    imagem: 'img_produto/photo-1595981267035-7b04ca84a82d.avif',
+    estoque: 999,
+    padrao: true
+  },
+  {
+    id: 'default-5',
+    nome: 'Suco Natural',
+    categoria: 'bebidas',
+    preco: '8.90',
+    descricao: 'Suco natural de frutas frescas',
+    imagem: 'img_produto/photo-1544145945-f90425340c7e.avif',
+    estoque: 999,
+    padrao: true
+  },
+  {
+    id: 'default-6',
+    nome: 'Refrigerante',
+    categoria: 'bebidas',
+    preco: '6.90',
+    descricao: 'Refrigerante gelado 350ml',
+    imagem: 'img_produto/photo-1497534446932-c925b458314e.avif',
+    estoque: 999,
+    padrao: true
+  }
+];
+
+// Carregar produtos do localStorage ou usar padrões
+function carregarProdutosCardapio() {
+  const produtosStorage = localStorage.getItem('produtosCardapio');
+  
+  if (produtosStorage) {
+    const produtosCustom = JSON.parse(produtosStorage);
+    // Combinar produtos customizados com os padrões
+    produtosCardapio = [...produtosPadrao, ...produtosCustom];
+  } else {
+    // Usar apenas produtos padrão
+    produtosCardapio = [...produtosPadrao];
+  }
+  
+  renderizarProdutosCardapio();
+}
+
+// Renderizar produtos no cardápio
+function renderizarProdutosCardapio() {
+  const sectionComidas = document.querySelector('.produtos.comidas');
+  const sectionBebidas = document.querySelector('.produtos.bebidas');
+  
+  if (!sectionComidas || !sectionBebidas) return;
+  
+  // Filtrar produtos por categoria
+  const comidas = produtosCardapio.filter(p => p.categoria === 'comidas');
+  const bebidas = produtosCardapio.filter(p => p.categoria === 'bebidas');
+  
+  // Renderizar comidas
+  sectionComidas.innerHTML = comidas.map(produto => criarCardProduto(produto)).join('');
+  
+  // Renderizar bebidas
+  sectionBebidas.innerHTML = bebidas.map(produto => criarCardProduto(produto)).join('');
+  
+  // Reconfigurar botões após renderizar
+  configurarBotoesAdicionar();
+}
+
+// Criar card de produto HTML
+function criarCardProduto(produto) {
+  const precoFormatado = parseFloat(produto.preco).toFixed(2).replace('.', ',');
+  
+  return `
+    <div class="card-produto" data-nome="${produto.nome}" data-preco="${produto.preco}" data-categoria="${produto.categoria}">
+      <img src="${produto.imagem}" alt="${produto.nome}" onerror="this.src='img_produto/placeholder.png'" />
+      <div class="info-produto">
+        <h3>${produto.nome}</h3>
+        <p>${produto.descricao}</p>
+        <div class="preco">R$ ${precoFormatado}</div>
+        <div class="produto-acoes">
+          <button class="btn-adicionar">Adicionar ao carrinho</button>
+          <div class="area-selecao" style="display: none;">
+            <div class="controle-quantidade-card">
+              <button class="btn-dim-card"><i class="fas fa-minus"></i></button>
+              <span class="qtd-card">1</span>
+              <button class="btn-aum-card"><i class="fas fa-plus"></i></button>
+            </div>
+            <button class="btn-adicionar-valor">
+              Adicionar <span class="valor-add">R$ 0,00</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
 }

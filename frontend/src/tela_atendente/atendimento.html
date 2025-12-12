@@ -31,7 +31,8 @@
   </nav>
 
   <main>
-    <section class="painel">
+    <!-- Seção de Pedidos -->
+    <section class="painel painel-pedidos ativo">
       <h2>Painel de Pedidos</h2>
       <div class="filtros">
         <button class="ativo">Todos (0)</button>
@@ -41,9 +42,118 @@
         <button>Finalizados (0)</button>
       </div>
 
-      <!-- Os pedidos serão carregados dinamicamente via JavaScript -->
+      <div id="listaPedidos">
+        <!-- Os pedidos serão carregados dinamicamente via JavaScript -->
+      </div>
+    </section>
+
+    <!-- Seção de Produtos -->
+    <section class="painel painel-produtos">
+      <div class="header-produtos">
+        <h2>Gerenciar Produtos</h2>
+        <button class="btn-novo-produto" id="btnNovoProduto">
+          <i class="fas fa-plus"></i>
+          Novo Produto
+        </button>
+      </div>
+
+      <div class="busca-produtos">
+        <input type="text" id="buscaProdutos" placeholder="Buscar produtos..." />
+        <div class="filtros-categoria">
+          <button class="filtro-cat ativo" data-categoria="todas">Todas</button>
+          <button class="filtro-cat" data-categoria="comidas">Comidas</button>
+          <button class="filtro-cat" data-categoria="bebidas">Bebidas</button>
+        </div>
+      </div>
+
+      <div class="grid-produtos" id="gridProdutos">
+        <!-- Produtos serão carregados dinamicamente -->
+      </div>
+    </section>
+
+    <!-- Seção de Estoque -->
+    <section class="painel painel-estoque">
+      <h2>Controle de Estoque</h2>
+      <div class="estoque-info">
+        <p><i class="fas fa-info-circle"></i> Em desenvolvimento...</p>
+      </div>
     </section>
   </main>
+
+  <!-- Modal de Cadastro/Edição de Produto -->
+  <div id="modalProduto" class="modal-produto">
+    <div class="modal-produto-content">
+      <div class="modal-produto-header">
+        <h3 id="tituloModalProduto">Novo Produto</h3>
+        <button class="btn-fechar-modal" id="fecharModalProduto">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <form id="formProduto" class="form-produto">
+        <div class="form-group">
+          <label for="nomeProduto">Nome do Produto *</label>
+          <input type="text" id="nomeProduto" required maxlength="80" placeholder="Ex: Coxinha de Frango" />
+          <small>0/80 caracteres</small>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="categoriaProduto">Categoria *</label>
+            <select id="categoriaProduto" required>
+              <option value="comidas">Comida</option>
+              <option value="bebidas">Bebida</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="precoProduto">Preço *</label>
+            <input type="text" id="precoProduto" required placeholder="0,00" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="descricaoProduto">Descrição para o Cliente *</label>
+          <textarea id="descricaoProduto" required maxlength="300" placeholder="Breve descrição para o cliente" rows="3"></textarea>
+          <small>0/300 caracteres</small>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="quantidadeEstoque">Quantidade em Estoque</label>
+            <input type="number" id="quantidadeEstoque" min="0" value="0" placeholder="0" />
+            <small>Quantidade disponível para venda</small>
+          </div>
+
+          <div class="form-group">
+            <label for="estoqueMinimo">Estoque Mínimo (Alerta)</label>
+            <input type="number" id="estoqueMinimo" min="0" value="10" placeholder="10" />
+            <small>Você será alertado quando atingir este nível</small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="imagemProduto">Imagens do Produto</label>
+          <div class="upload-area" id="uploadArea">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p>Arraste e solte sua imagem aqui</p>
+            <p class="ou">ou clique para selecionar arquivo</p>
+            <small>JPG, PNG, HEIC até 5MB</small>
+          </div>
+          <input type="file" id="imagemProduto" accept="image/*" style="display: none;" />
+          <div id="previewImagem" class="preview-imagem"></div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-cancelar" id="cancelarProduto">Cancelar</button>
+          <button type="submit" class="btn-salvar-produto">
+            <i class="fas fa-save"></i>
+            Salvar Produto
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <script src="atendimento.js"></script>
 </body>
