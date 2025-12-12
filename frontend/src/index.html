@@ -1,65 +1,191 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Click Pedidos</title>
-    <link rel="stylesheet" href="./style/style-index.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
-      rel="stylesheet"
-    />
-  </head>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click Pedidos - Bem-vindo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-  <body>
-    <header class="header">
-      <h1 class="title">Click Pedidos</h1>
-      <p class="subtitle">Sistema de Pedidos Online</p>
-      <p class="description">Selecione como deseja acessar o sistema</p>
-    </header>
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
 
-    <main class="main-container">
-      <div class="cards-container">
-        <div class="card">
-          <div class="icon-container">🏠</div>
-          <h2>Sou Cliente</h2>
-          <p class="card-text">
-            Faça seu pedido online de forma rápida e prática:
-          </p>
-          <ul>
-            <li>Navegue pelo cardápio</li>
-            <li>Adicione itens ao carrinho</li>
-            <li>Pague com cartão ou PIX</li>
-            <li>Acompanhe seu pedido</li>
-          </ul>
-          <button
-            onclick="window.location.href = './Tela_Produtos/index_produto.html'"
-            class="cards-btn"
-          >
-            Entrar como cliente
-          </button>
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .logo-principal {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .logo-principal i {
+            font-size: 80px;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .logo-principal h1 {
+            font-size: 48px;
+            color: white;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo-principal p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        .cards-acesso {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .card-acesso {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .card-acesso:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .card-acesso:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-acesso i {
+            font-size: 64px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card-acesso h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .card-acesso p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .badge-destaque {
+            display: inline-block;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .logo-principal h1 {
+                font-size: 36px;
+            }
+
+            .logo-principal i {
+                font-size: 60px;
+            }
+
+            .cards-acesso {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-principal">
+            <i class="fas fa-shopping-cart"></i>
+            <h1>CLICK PEDIDOS</h1>
+            <p>Sistema de Pedidos Online</p>
         </div>
 
-        <div class="card">
-          <div class="icon-container">👥</div>
-          <h2>Sou do Atendimento</h2>
-          <p class="card-text">Gerencie pedidos e atenda seus clientes:</p>
-          <ul>
-            <li>Visualize pedidos em tempo real</li>
-            <li>Gerencie status dos pedidos</li>
-            <li>Notifique clientes</li>
-            <li>Controle da cozinha</li>
-          </ul>
-          <button class="cards-btn">Entrar como Atendente</button>
-        </div>
-      </div>
-    </main>
+        <div class="cards-acesso">
+            <a href="Tela_Produtos/index_produto.html" class="card-acesso">
+                <i class="fas fa-utensils"></i>
+                <h2>Cardápio</h2>
+                <p>Visualize nossos produtos e faça seu pedido de forma rápida e prática</p>
+                <span class="badge-destaque">Clientes</span>
+            </a>
 
-    <footer class="footer">
-      <p>Sistema integrado - Pedidos sincronizados em tempo real</p>
-    </footer>
-  </body>
-  <script src="./scripts/scriptIndex.js"></script>
+            <a href="tela_atendente/atendimento.html" class="card-acesso">
+                <i class="fas fa-user-tie"></i>
+                <h2>Atendimento</h2>
+                <p>Gerencie pedidos, produtos e o sistema de atendimento</p>
+                <span class="badge-destaque">Atendentes</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Redirecionar automaticamente para tela de produtos após 2 segundos (opcional)
+        // setTimeout(() => {
+        //     window.location.href = 'Tela_Produtos/index_produto.html';
+        // }, 2000);
+    </script>
+</body>
 </html>

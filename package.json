@@ -4,7 +4,9 @@
   "description": "**Click Pedidos** é uma solução voltada para pequenas empresas que desejam facilitar o atendimento aos clientes.",
   "main": "index.js",
   "scripts": {
-    "dev": "live-server frontend/src/",
+    "dev": "live-server frontend/src/ --port=8080 --open=/index.html",
+    "dev:produtos": "live-server frontend/src/ --port=8080 --open=/Tela_Produtos/index_produto.html",
+    "dev:atendimento": "live-server frontend/src/ --port=8080 --open=/tela_atendente/atendimento.html",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint . --ext .js,.html",
     "lint:css": "stylelint '**/*.css'"
