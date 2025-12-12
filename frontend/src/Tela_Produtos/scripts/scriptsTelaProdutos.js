@@ -947,15 +947,21 @@ const produtosPadrao = [
 // Carregar produtos do localStorage ou usar padrões
 function carregarProdutosCardapio() {
   const produtosStorage = localStorage.getItem('produtosCardapio');
+  const produtosDeletadosStorage = localStorage.getItem('produtosDeletados');
+  
+  // Lista de produtos deletados permanentemente
+  const produtosDeletados = produtosDeletadosStorage ? JSON.parse(produtosDeletadosStorage) : [];
   
   if (produtosStorage) {
-    const produtosCustom = JSON.parse(produtosStorage);
-    // Combinar produtos customizados com os padrões
-    produtosCardapio = [...produtosPadrao, ...produtosCustom];
+    // Carregar todos os produtos salvos
+    produtosCardapio = JSON.parse(produtosStorage);
   } else {
-    // Usar apenas produtos padrão
+    // Primeira vez: usar produtos padrão
     produtosCardapio = [...produtosPadrao];
   }
+  
+  // Filtrar produtos deletados permanentemente
+  produtosCardapio = produtosCardapio.filter(p => !produtosDeletados.includes(p.id));
   
   renderizarProdutosCardapio();
 }

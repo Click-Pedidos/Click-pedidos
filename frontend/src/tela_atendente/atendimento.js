@@ -432,19 +432,25 @@ const produtosPadrao = [
 function carregarProdutos() {
   console.log('📦 Carregando produtos...');
   const produtosStorage = localStorage.getItem('produtosCardapio');
+  const produtosDeletadosStorage = localStorage.getItem('produtosDeletados');
   
-  let produtosCustomizados = [];
+  // Lista de IDs de produtos deletados permanentemente
+  const produtosDeletados = produtosDeletadosStorage ? JSON.parse(produtosDeletadosStorage) : [];
   
   if (produtosStorage) {
-    const todosProdutos = JSON.parse(produtosStorage);
-    // Separar produtos customizados (IDs que não começam com 'default-')
-    produtosCustomizados = todosProdutos.filter(p => !p.id.startsWith('default-'));
-    console.log('✅ Produtos customizados carregados:', produtosCustomizados.length);
+    // Se já existe lista salva, usar ela (inclui padrão + customizados)
+    produtos = JSON.parse(produtosStorage);
+    console.log('✅ Produtos carregados do localStorage:', produtos.length);
+  } else {
+    // Primeira vez: inicializar com produtos padrão e salvar
+    produtos = [...produtosPadrao];
+    salvarProdutos();
+    console.log('✅ Produtos padrão inicializados:', produtos.length);
   }
   
-  // SEMPRE incluir produtos padrão + produtos customizados
-  produtos = [...produtosPadrao, ...produtosCustomizados];
-  console.log('✅ Total de produtos:', produtos.length, '(Padrão:', produtosPadrao.length, '+ Customizados:', produtosCustomizados.length, ')');
+  // Filtrar produtos deletados permanentemente
+  produtos = produtos.filter(p => !produtosDeletados.includes(p.id));
+  console.log('✅ Produtos após filtrar deletados:', produtos.length);
   
   renderizarProdutos();
 }
@@ -603,11 +609,21 @@ function editarProduto(id) {
 
 // Deletar produto
 function deletarProduto(id) {
-  if (confirm('Tem certeza que deseja deletar este produto?')) {
+  if (confirm('Tem certeza que deseja deletar este produto? Ele será removido permanentemente!')) {
+    // Adicionar ID à lista de deletados permanentemente
+    const produtosDeletadosStorage = localStorage.getItem('produtosDeletados');
+    const produtosDeletados = produtosDeletadosStorage ? JSON.parse(produtosDeletadosStorage) : [];
+    
+    if (!produtosDeletados.includes(id)) {
+      produtosDeletados.push(id);
+      localStorage.setItem('produtosDeletados', JSON.stringify(produtosDeletados));
+    }
+    
+    // Remover do array atual
     produtos = produtos.filter(p => p.id !== id);
     salvarProdutos();
     renderizarProdutos();
-    mostrarNotificacao('✅ Produto deletado com sucesso!');
+    mostrarNotificacao('✅ Produto deletado permanentemente!');
   }
 }
 
@@ -642,7 +658,7 @@ function salvarProduto(e) {
   } else {
     // Novo produto
     const novoProduto = {
-      id: Date.now().toString(),
+      id: 'custom-' + Date.now().toString(), // Prefixo para identificar customizados
       nome,
       categoria,
       preco,
