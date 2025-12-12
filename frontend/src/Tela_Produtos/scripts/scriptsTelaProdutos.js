@@ -29,6 +29,13 @@ const btnCopiarPix = document.getElementById('copiarPix');
 const btnConfirmarPagamento = document.getElementById('confirmarPagamento');
 const btnCancelarPagamento = document.getElementById('cancelarPagamento');
 
+// Elementos do modal de acompanhamento
+const modalAcompanhamento = document.getElementById('modalAcompanhamento');
+const btnAbrirAcompanhamento = document.getElementById('abrirAcompanhamento');
+const btnFecharModalAcompanhamento = document.getElementById('fecharModalAcompanhamento');
+const badgeAcompanhamento = document.getElementById('badgeAcompanhamento');
+const acompanhamentoVazioDiv = document.getElementById('acompanhamentoVazio');
+
 // Inicialização
 document.addEventListener("DOMContentLoaded", function () {
   // Configurar as abas
@@ -46,17 +53,24 @@ document.addEventListener("DOMContentLoaded", function () {
   // Configurar modal de pagamento
   configurarModalPagamento();
   
+  // Configurar modal de acompanhamento
+  configurarModalAcompanhamento();
+  
   // Carregar carrinho do localStorage
   carregarCarrinho();
   
   // Carregar pedidos finalizados
   carregarPedidosFinalizados();
   
+  // Iniciar acompanhamento em tempo real
+  iniciarAcompanhamentoTempoReal();
+  
   // Escutar mudanças do localStorage em outras abas/janelas (atendimento)
   window.addEventListener('storage', function(e) {
     if (e.key === 'pedidosFinalizados') {
       carregarPedidosFinalizados();
       renderizarPedidosAnteriores();
+      atualizarAcompanhamentoTempoReal();
     }
   });
 });
@@ -376,6 +390,31 @@ function configurarModalPedidos() {
   });
 }
 
+// Configurar modal de acompanhamento
+function configurarModalAcompanhamento() {
+  // Abrir modal
+  btnAbrirAcompanhamento.addEventListener('click', function(e) {
+    e.preventDefault();
+    atualizarAcompanhamentoTempoReal();
+    modalAcompanhamento.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  });
+  
+  // Fechar modal
+  btnFecharModalAcompanhamento.addEventListener('click', function() {
+    modalAcompanhamento.style.display = 'none';
+    document.body.style.overflow = 'auto';
+  });
+  
+  // Fechar modal ao clicar fora
+  modalAcompanhamento.addEventListener('click', function(e) {
+    if (e.target === modalAcompanhamento) {
+      modalAcompanhamento.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+  });
+}
+
 // Finalizar pedido
 function finalizarPedido() {
   if (carrinho.length === 0) {
@@ -605,4 +644,225 @@ function mostrarNotificacao(mensagem, tipo = 'sucesso') {
       notificacao.remove();
     }, 300);
   }, 3000);
+}
+
+// ============================================
+// ACOMPANHAMENTO EM TEMPO REAL
+// ============================================
+
+function iniciarAcompanhamentoTempoReal() {
+  atualizarAcompanhamentoTempoReal();
+  
+  // Atualizar a cada 3 segundos
+  setInterval(atualizarAcompanhamentoTempoReal, 3000);
+}
+
+function atualizarAcompanhamentoTempoReal() {
+  const seusPedidosAtivosDiv = document.getElementById('seusPedidosAtivos');
+  const listaOutrosPedidosDiv = document.getElementById('listaOutrosPedidos');
+  const totalNaFilaSpan = document.getElementById('totalNaFila');
+  
+  // Obter todos os pedidos
+  const todosPedidos = pedidosFinalizados || [];
+  
+  // Filtrar pedidos ativos (pendentes, preparando ou prontos)
+  const pedidosAtivos = todosPedidos.filter(p => 
+    p.statusAtendimento === 'pendente' || 
+    p.statusAtendimento === 'preparando' ||
+    p.statusAtendimento === 'pronto'
+  );
+  
+  // Atualizar badge e mostrar/esconder conteúdo vazio
+  if (pedidosAtivos.length === 0) {
+    badgeAcompanhamento.style.display = 'none';
+    if (acompanhamentoVazioDiv) {
+      acompanhamentoVazioDiv.style.display = 'flex';
+    }
+    if (seusPedidosAtivosDiv) {
+      seusPedidosAtivosDiv.style.display = 'none';
+    }
+    document.querySelector('.fila-info').style.display = 'none';
+    document.querySelector('.outros-pedidos').style.display = 'none';
+    return;
+  }
+  
+  // Mostrar badge com contador
+  badgeAcompanhamento.textContent = pedidosAtivos.length;
+  badgeAcompanhamento.style.display = 'inline-block';
+  
+  // Mostrar conteúdo e esconder vazio
+  if (acompanhamentoVazioDiv) {
+    acompanhamentoVazioDiv.style.display = 'none';
+  }
+  if (seusPedidosAtivosDiv) {
+    seusPedidosAtivosDiv.style.display = 'flex';
+  }
+  document.querySelector('.fila-info').style.display = 'block';
+  document.querySelector('.outros-pedidos').style.display = 'block';
+  
+  // Ordenar por data (mais antigos primeiro = fila)
+  pedidosAtivos.sort((a, b) => new Date(a.data) - new Date(b.data));
+  
+  // Atualizar total na fila
+  totalNaFilaSpan.textContent = pedidosAtivos.length;
+  
+  // Separar seus pedidos dos outros
+  const seusPedidos = [];
+  const outrosPedidos = [];
+  
+  pedidosAtivos.forEach((pedido, index) => {
+    pedido.posicaoFila = index + 1;
+    seusPedidos.push(pedido); // Por enquanto, mostrar todos como "seus pedidos"
+  });
+  
+  // Renderizar seus pedidos
+  renderizarSeusPedidosAtivos(seusPedidos);
+  
+  // Renderizar outros pedidos em preparo
+  const pedidosEmPreparo = pedidosAtivos.filter(p => p.statusAtendimento === 'preparando');
+  renderizarOutrosPedidos(pedidosEmPreparo);
+}
+
+function renderizarSeusPedidosAtivos(pedidos) {
+  const seusPedidosAtivosDiv = document.getElementById('seusPedidosAtivos');
+  
+  if (pedidos.length === 0) {
+    seusPedidosAtivosDiv.innerHTML = '';
+    return;
+  }
+  
+  seusPedidosAtivosDiv.innerHTML = pedidos.map(pedido => {
+    const statusInfo = obterStatusInfoAcompanhamento(pedido.statusAtendimento);
+    const tempoDecorrido = calcularTempoDecorrido(pedido.data);
+    
+    // Calcular pedidos na frente (apenas se não estiver pronto)
+    const pedidosNaFrente = pedido.posicaoFila - 1;
+    
+    return `
+      <div class="card-pedido-ativo ${pedido.statusAtendimento}">
+        <div class="header-pedido-ativo">
+          <div class="numero-pedido-ativo">
+            <i class="fas fa-receipt"></i>
+            ${pedido.numero}
+          </div>
+          <div class="status-pedido-ativo" style="background: ${statusInfo.cor}; color: ${statusInfo.corTexto};">
+            ${statusInfo.icone} ${statusInfo.texto}
+          </div>
+        </div>
+        
+        <div class="info-pedido-ativo">
+          ${pedido.statusAtendimento !== 'pronto' ? `
+            <div class="posicao-fila">
+              <i class="fas fa-list-ol"></i>
+              <span>Posição na fila: <strong>${pedido.posicaoFila}º</strong></span>
+            </div>
+            
+            ${pedidosNaFrente > 0 ? `
+              <div class="pedidos-frente">
+                <i class="fas fa-users"></i>
+                <span><strong>${pedidosNaFrente}</strong> ${pedidosNaFrente === 1 ? 'pedido' : 'pedidos'} na sua frente</span>
+              </div>
+            ` : `
+              <div class="pedidos-frente destaque">
+                <i class="fas fa-star"></i>
+                <span>Seu pedido é o próximo!</span>
+              </div>
+            `}
+          ` : ''}
+          
+          <div class="tempo-pedido">
+            <i class="far fa-clock"></i>
+            <span>${tempoDecorrido}</span>
+          </div>
+          
+          <div class="itens-resumo">
+            <i class="fas fa-shopping-bag"></i>
+            <span>${pedido.itens.length} ${pedido.itens.length === 1 ? 'item' : 'itens'} - R$ ${pedido.total.toFixed(2).replace('.', ',')}</span>
+          </div>
+        </div>
+        
+        ${pedido.statusAtendimento === 'preparando' ? `
+          <div class="animacao-preparo">
+            <div class="spinner"></div>
+            <span>Preparando seu pedido...</span>
+          </div>
+        ` : ''}
+        
+        ${pedido.statusAtendimento === 'pronto' ? `
+          <div class="pedido-pronto-alerta">
+            <div class="icone-pronto">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="texto-pronto">
+              <h3>🎉 Seu Pedido está Pronto!</h3>
+              <p>Dirija-se ao balcão para retirar</p>
+            </div>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }).join('');
+}
+
+function renderizarOutrosPedidos(pedidos) {
+  const listaOutrosPedidosDiv = document.getElementById('listaOutrosPedidos');
+  
+  if (pedidos.length === 0) {
+    listaOutrosPedidosDiv.innerHTML = '<p class="sem-outros-pedidos">Nenhum pedido em preparo no momento</p>';
+    return;
+  }
+  
+  listaOutrosPedidosDiv.innerHTML = pedidos.map(pedido => {
+    return `
+      <div class="mini-card-pedido">
+        <span class="mini-numero">${pedido.numero}</span>
+        <span class="mini-status">
+          <div class="spinner-mini"></div>
+          Preparando
+        </span>
+      </div>
+    `;
+  }).join('');
+}
+
+function obterStatusInfoAcompanhamento(status) {
+  const statusMap = {
+    'pendente': { 
+      texto: 'Aguardando', 
+      icone: '⏳', 
+      cor: '#fff3cd', 
+      corTexto: '#856404' 
+    },
+    'preparando': { 
+      texto: 'Em Preparo', 
+      icone: '👨‍🍳', 
+      cor: '#cfe2ff', 
+      corTexto: '#084298' 
+    },
+    'pronto': { 
+      texto: 'Pronto!', 
+      icone: '✅', 
+      cor: '#d1e7dd', 
+      corTexto: '#0a3622' 
+    }
+  };
+  
+  return statusMap[status] || statusMap['pendente'];
+}
+
+function calcularTempoDecorrido(dataISO) {
+  const agora = new Date();
+  const dataPedido = new Date(dataISO);
+  const diff = Math.floor((agora - dataPedido) / 1000); // segundos
+  
+  if (diff < 60) {
+    return 'Agora mesmo';
+  } else if (diff < 3600) {
+    const minutos = Math.floor(diff / 60);
+    return `Há ${minutos} ${minutos === 1 ? 'minuto' : 'minutos'}`;
+  } else {
+    const horas = Math.floor(diff / 3600);
+    const minutos = Math.floor((diff % 3600) / 60);
+    return `Há ${horas}h${minutos}min`;
+  }
 }

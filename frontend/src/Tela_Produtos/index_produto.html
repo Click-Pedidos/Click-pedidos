@@ -13,9 +13,6 @@
   </head>
   <body>
     <header>
-      <div class="voltar">
-        <a href="../index.html"><i class="fas fa-arrow-left"></i> Voltar</a>
-      </div>
       <div class="logo">
         <img src="img_produto/logo.jpeg" alt="Click Pedido Logo" />
       </div>
@@ -28,6 +25,10 @@
           <p>Escolha seus pratos e bebidas favoritos</p>
         </div>
         <div class="carrinho-container">
+          <a href="#" class="acompanhar-btn" id="abrirAcompanhamento">
+            <i class="fas fa-clock"></i>
+            Acompanhar <span class="badge-acompanhamento" id="badgeAcompanhamento" style="display: none;">0</span>
+          </a>
           <a href="#" class="pedidos-btn" id="abrirPedidos">
             <i class="fas fa-receipt"></i>
             Meus Pedidos
@@ -458,6 +459,45 @@
           <button class="btn-cancelar-pagamento" id="cancelarPagamento">
             <i class="fas fa-times"></i> Cancelar
           </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Acompanhamento em Tempo Real -->
+    <div id="modalAcompanhamento" class="modal">
+      <div class="modal-content modal-acompanhamento">
+        <div class="modal-header">
+          <h2><i class="fas fa-clock"></i> Acompanhamento em Tempo Real</h2>
+          <span class="fechar-modal" id="fecharModalAcompanhamento">&times;</span>
+        </div>
+        <div class="modal-body">
+          <div class="acompanhamento-container-modal">
+            <div class="pedidos-em-preparo">
+              <div class="fila-info">
+                <div class="total-fila">
+                  <span class="numero-fila" id="totalNaFila">0</span>
+                  <span class="texto-fila">pedidos na fila</span>
+                </div>
+              </div>
+              
+              <div class="seus-pedidos-ativos" id="seusPedidosAtivos">
+                <!-- Pedidos do cliente serão inseridos aqui -->
+              </div>
+              
+              <div class="outros-pedidos">
+                <h3>Pedidos em Preparo</h3>
+                <div class="lista-outros-pedidos" id="listaOutrosPedidos">
+                  <!-- Outros pedidos serão inseridos aqui -->
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="acompanhamento-vazio" id="acompanhamentoVazio">
+            <i class="fas fa-clipboard-check"></i>
+            <p>Nenhum pedido em preparo no momento</p>
+            <small>Seus pedidos ativos aparecerão aqui</small>
+          </div>
         </div>
       </div>
     </div>
