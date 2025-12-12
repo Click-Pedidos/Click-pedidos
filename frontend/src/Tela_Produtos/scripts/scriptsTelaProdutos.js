@@ -1,0 +1,1017 @@
+// Produtos e Carrinho
+let produtosCardapio = [];
+let carrinho = [];
+let pedidosFinalizados = [];
+
+// Elementos DOM
+const modal = document.getElementById('modalCarrinho');
+const btnAbrirCarrinho = document.getElementById('abrirCarrinho');
+const btnFecharModal = document.getElementById('fecharModal');
+const badgeCarrinho = document.getElementById('badgeCarrinho');
+const itensCarrinhoDiv = document.getElementById('itensCarrinho');
+const carrinhoVazioDiv = document.getElementById('carrinhoVazio');
+const totalCarrinhoSpan = document.getElementById('totalCarrinho');
+const btnFinalizarPedido = document.getElementById('finalizarPedido');
+
+// Elementos do modal de pedidos
+const modalPedidos = document.getElementById('modalPedidos');
+const btnAbrirPedidos = document.getElementById('abrirPedidos');
+const btnFecharModalPedidos = document.getElementById('fecharModalPedidos');
+const listaPedidosDiv = document.getElementById('listaPedidos');
+const pedidosVazioDiv = document.getElementById('pedidosVazio');
+
+// Elementos do modal de pagamento
+const modalPagamento = document.getElementById('modalPagamento');
+const btnFecharModalPagamento = document.getElementById('fecharModalPagamento');
+const valorPagamentoSpan = document.getElementById('valorPagamento');
+const nomeClientePagamentoSpan = document.getElementById('nomeClientePagamento');
+const numeroPedidoSpan = document.getElementById('numeroPedido');
+const btnCopiarPix = document.getElementById('copiarPix');
+const btnConfirmarPagamento = document.getElementById('confirmarPagamento');
+const btnCancelarPagamento = document.getElementById('cancelarPagamento');
+
+// Elementos do modal de acompanhamento
+const modalAcompanhamento = document.getElementById('modalAcompanhamento');
+const btnAbrirAcompanhamento = document.getElementById('abrirAcompanhamento');
+const btnFecharModalAcompanhamento = document.getElementById('fecharModalAcompanhamento');
+const badgeAcompanhamento = document.getElementById('badgeAcompanhamento');
+const acompanhamentoVazioDiv = document.getElementById('acompanhamentoVazio');
+
+// Inicialização
+document.addEventListener("DOMContentLoaded", function () {
+  // Carregar produtos do localStorage primeiro
+  carregarProdutosCardapio();
+  
+  // Configurar as abas
+  configurarAbas();
+  
+  // Configurar os botões de adicionar ao carrinho
+  configurarBotoesAdicionar();
+  
+  // Configurar modal
+  configurarModal();
+  
+  // Configurar modal de pedidos
+  configurarModalPedidos();
+  
+  // Configurar modal de pagamento
+  configurarModalPagamento();
+  
+  // Configurar modal de acompanhamento
+  configurarModalAcompanhamento();
+  
+  // Carregar carrinho do localStorage
+  carregarCarrinho();
+  
+  // Carregar pedidos finalizados
+  carregarPedidosFinalizados();
+  
+  // Iniciar acompanhamento em tempo real
+  iniciarAcompanhamentoTempoReal();
+  
+  // Escutar mudanças do localStorage em outras abas/janelas
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'pedidosFinalizados') {
+      carregarPedidosFinalizados();
+      renderizarPedidosAnteriores();
+      atualizarAcompanhamentoTempoReal();
+    }
+    
+    // Atualizar produtos quando modificados no atendimento
+    if (e.key === 'produtosCardapio') {
+      carregarProdutosCardapio();
+    }
+  });
+});
+
+// Configurar navegação entre abas
+function configurarAbas() {
+  const tabBtns = document.querySelectorAll(".tab-btn");
+  const produtosSections = document.querySelectorAll(".produtos");
+
+  tabBtns.forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const tab = this.dataset.tab;
+
+      // Remover classe active de todos os botões
+      tabBtns.forEach((btn) => btn.classList.remove("active"));
+
+      // Remover classe active de todas as seções
+      produtosSections.forEach((section) =>
+        section.classList.remove("active")
+      );
+
+      // Adicionar classe active ao botão clicado
+      this.classList.add("active");
+
+      // Adicionar classe active à seção correspondente
+      document.querySelector(`.produtos.${tab}`).classList.add("active");
+    });
+  });
+}
+
+// Configurar botões de adicionar ao carrinho
+function configurarBotoesAdicionar() {
+  const botoesAdicionar = document.querySelectorAll('.btn-adicionar');
+  
+  botoesAdicionar.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const cardProduto = this.closest('.card-produto');
+      const produtoAcoes = this.closest('.produto-acoes');
+      const areaSelecao = produtoAcoes.querySelector('.area-selecao');
+      const preco = parseFloat(cardProduto.dataset.preco);
+      
+      // Esconder botão "Adicionar ao carrinho"
+      this.style.display = 'none';
+      
+      // Mostrar área de seleção
+      areaSelecao.style.display = 'block';
+      
+      // Resetar quantidade para 1
+      const quantidadeSpan = areaSelecao.querySelector('.qtd-card');
+      quantidadeSpan.textContent = '1';
+      
+      // Atualizar valor no botão
+      const valorSpan = areaSelecao.querySelector('.valor-add');
+      valorSpan.textContent = `R$ ${preco.toFixed(2)}`;
+    });
+  });
+  
+  // Configurar botões de diminuir quantidade no card
+  const botoesDiminuir = document.querySelectorAll('.btn-dim-card');
+  botoesDiminuir.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const areaSelecao = this.closest('.area-selecao');
+      const quantidadeSpan = areaSelecao.querySelector('.qtd-card');
+      const valorSpan = areaSelecao.querySelector('.valor-add');
+      const cardProduto = this.closest('.card-produto');
+      const preco = parseFloat(cardProduto.dataset.preco);
+      const produtoAcoes = this.closest('.produto-acoes');
+      const btnAdicionar = produtoAcoes.querySelector('.btn-adicionar');
+      
+      let quantidade = parseInt(quantidadeSpan.textContent);
+      
+      if (quantidade > 1) {
+        quantidade--;
+        quantidadeSpan.textContent = quantidade;
+        const total = preco * quantidade;
+        valorSpan.textContent = `R$ ${total.toFixed(2)}`;
+      } else if (quantidade === 1) {
+        // Voltar ao estado inicial quando chegar a 0
+        areaSelecao.style.display = 'none';
+        btnAdicionar.style.display = 'block';
+        quantidadeSpan.textContent = '1';
+      }
+    });
+  });
+  
+  // Configurar botões de aumentar quantidade no card
+  const botoesAumentar = document.querySelectorAll('.btn-aum-card');
+  botoesAumentar.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const areaSelecao = this.closest('.area-selecao');
+      const quantidadeSpan = areaSelecao.querySelector('.qtd-card');
+      const valorSpan = areaSelecao.querySelector('.valor-add');
+      const cardProduto = this.closest('.card-produto');
+      const preco = parseFloat(cardProduto.dataset.preco);
+      
+      let quantidade = parseInt(quantidadeSpan.textContent);
+      quantidade++;
+      quantidadeSpan.textContent = quantidade;
+      const total = preco * quantidade;
+      valorSpan.textContent = `R$ ${total.toFixed(2)}`;
+    });
+  });
+  
+  // Configurar botão de adicionar com valor
+  const botoesAdicionarValor = document.querySelectorAll('.btn-adicionar-valor');
+  botoesAdicionarValor.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const cardProduto = this.closest('.card-produto');
+      const areaSelecao = this.closest('.area-selecao');
+      const quantidadeSpan = areaSelecao.querySelector('.qtd-card');
+      const quantidade = parseInt(quantidadeSpan.textContent);
+      const produtoAcoes = this.closest('.produto-acoes');
+      const btnAdicionar = produtoAcoes.querySelector('.btn-adicionar');
+      
+      const produto = {
+        nome: cardProduto.dataset.nome,
+        preco: parseFloat(cardProduto.dataset.preco),
+        categoria: cardProduto.dataset.categoria
+      };
+      
+      // Adicionar ao carrinho com a quantidade selecionada
+      const itemExistente = carrinho.find(item => item.nome === produto.nome);
+      
+      if (itemExistente) {
+        itemExistente.quantidade += quantidade;
+      } else {
+        carrinho.push({
+          ...produto,
+          quantidade: quantidade
+        });
+      }
+      
+      // Salvar e atualizar
+      salvarCarrinho();
+      atualizarBadgeCarrinho();
+      
+      // Esconder área de seleção e mostrar botão novamente
+      areaSelecao.style.display = 'none';
+      btnAdicionar.style.display = 'block';
+      
+      // Resetar quantidade
+      quantidadeSpan.textContent = '1';
+      
+      // Mostrar feedback
+      mostrarNotificacao(`${quantidade}x ${produto.nome} adicionado ao carrinho!`);
+    });
+  });
+}
+
+// Adicionar produto ao carrinho
+function adicionarAoCarrinho(produto) {
+  // Verificar se o produto já está no carrinho
+  const itemExistente = carrinho.find(item => item.nome === produto.nome);
+  
+  if (itemExistente) {
+    itemExistente.quantidade++;
+  } else {
+    carrinho.push({
+      ...produto,
+      quantidade: 1
+    });
+  }
+  
+  // Salvar no localStorage
+  salvarCarrinho();
+  
+  // Atualizar interface
+  atualizarBadgeCarrinho();
+  
+  // Mostrar feedback visual
+  mostrarNotificacao('Produto adicionado ao carrinho!');
+}
+
+// Remover produto do carrinho
+function removerDoCarrinho(nomeProduto) {
+  carrinho = carrinho.filter(item => item.nome !== nomeProduto);
+  salvarCarrinho();
+  renderizarCarrinho();
+  atualizarBadgeCarrinho();
+  mostrarNotificacao('Produto removido do carrinho');
+}
+
+// Atualizar quantidade
+function atualizarQuantidade(nomeProduto, novaQuantidade) {
+  const item = carrinho.find(item => item.nome === nomeProduto);
+  
+  if (item) {
+    if (novaQuantidade <= 0) {
+      removerDoCarrinho(nomeProduto);
+    } else {
+      item.quantidade = novaQuantidade;
+      salvarCarrinho();
+      renderizarCarrinho();
+      atualizarBadgeCarrinho();
+    }
+  }
+}
+
+// Renderizar itens do carrinho
+function renderizarCarrinho() {
+  if (carrinho.length === 0) {
+    itensCarrinhoDiv.style.display = 'none';
+    carrinhoVazioDiv.style.display = 'flex';
+    document.getElementById('subtotalCarrinho').textContent = 'R$ 0,00';
+    document.getElementById('totalCarrinho').textContent = 'R$ 0,00';
+    return;
+  }
+  
+  itensCarrinhoDiv.style.display = 'block';
+  carrinhoVazioDiv.style.display = 'none';
+  
+  itensCarrinhoDiv.innerHTML = carrinho.map(item => {
+    const subtotalItem = item.preco * item.quantidade;
+    return `
+    <div class="item-carrinho-resumo">
+      <div class="item-linha">
+        <div class="item-quantidade-nome">
+          <span class="qtd-badge">${item.quantidade}x</span>
+          <span class="item-nome">${item.nome}</span>
+        </div>
+        <div class="item-valor">R$ ${subtotalItem.toFixed(2)}</div>
+      </div>
+      <div class="item-acoes">
+        <div class="quantidade-controle">
+          <button class="btn-quantidade" onclick="atualizarQuantidade('${item.nome}', ${item.quantidade - 1})">
+            <i class="fas fa-minus"></i>
+          </button>
+          <span class="quantidade">${item.quantidade}</span>
+          <button class="btn-quantidade" onclick="atualizarQuantidade('${item.nome}', ${item.quantidade + 1})">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+        <button class="btn-remover" onclick="removerDoCarrinho('${item.nome}')" title="Remover item">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </div>
+      <div class="item-preco-unitario">
+        <small>R$ ${item.preco.toFixed(2)} cada</small>
+      </div>
+    </div>
+  `;
+  }).join('');
+  
+  // Atualizar total
+  atualizarTotal();
+}
+
+// Atualizar total do carrinho
+function atualizarTotal() {
+  const total = carrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
+  document.getElementById('subtotalCarrinho').textContent = `R$ ${total.toFixed(2)}`;
+  document.getElementById('totalCarrinho').textContent = `R$ ${total.toFixed(2)}`;
+}
+
+// Atualizar badge do carrinho
+function atualizarBadgeCarrinho() {
+  const totalItens = carrinho.reduce((acc, item) => acc + item.quantidade, 0);
+  badgeCarrinho.textContent = totalItens;
+  
+  if (totalItens > 0) {
+    badgeCarrinho.style.display = 'inline-block';
+  } else {
+    badgeCarrinho.style.display = 'none';
+  }
+}
+
+// Configurar modal
+function configurarModal() {
+  // Abrir modal
+  btnAbrirCarrinho.addEventListener('click', function(e) {
+    e.preventDefault();
+    renderizarCarrinho();
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+  });
+  
+  // Fechar modal
+  btnFecharModal.addEventListener('click', function() {
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+  });
+  
+  // Fechar modal ao clicar fora
+  window.addEventListener('click', function(e) {
+    if (e.target === modal) {
+      modal.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+  });
+  
+  // Finalizar pedido
+  btnFinalizarPedido.addEventListener('click', finalizarPedido);
+}
+
+// Configurar modal de pedidos
+function configurarModalPedidos() {
+  // Abrir modal
+  btnAbrirPedidos.addEventListener('click', function(e) {
+    e.preventDefault();
+    renderizarPedidosAnteriores();
+    modalPedidos.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  });
+  
+  // Fechar modal
+  btnFecharModalPedidos.addEventListener('click', function() {
+    modalPedidos.style.display = 'none';
+    document.body.style.overflow = 'auto';
+  });
+  
+  // Fechar modal ao clicar fora
+  modalPedidos.addEventListener('click', function(e) {
+    if (e.target === modalPedidos) {
+      modalPedidos.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+  });
+}
+
+// Configurar modal de acompanhamento
+function configurarModalAcompanhamento() {
+  // Abrir modal
+  btnAbrirAcompanhamento.addEventListener('click', function(e) {
+    e.preventDefault();
+    atualizarAcompanhamentoTempoReal();
+    modalAcompanhamento.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  });
+  
+  // Fechar modal
+  btnFecharModalAcompanhamento.addEventListener('click', function() {
+    modalAcompanhamento.style.display = 'none';
+    document.body.style.overflow = 'auto';
+  });
+  
+  // Fechar modal ao clicar fora
+  modalAcompanhamento.addEventListener('click', function(e) {
+    if (e.target === modalAcompanhamento) {
+      modalAcompanhamento.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+  });
+}
+
+// Finalizar pedido
+function finalizarPedido() {
+  if (carrinho.length === 0) {
+    mostrarNotificacao('Seu carrinho está vazio!', 'erro');
+    return;
+  }
+  
+  // Calcular total
+  const total = carrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
+  
+  // Gerar número do pedido
+  const numeroPedido = 'PED-' + Date.now().toString().slice(-6);
+  
+  // Preencher dados do modal de pagamento
+  valorPagamentoSpan.textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+  numeroPedidoSpan.textContent = numeroPedido;
+  
+  // Fechar modal do carrinho e abrir modal de pagamento
+  modal.style.display = 'none';
+  modalPagamento.style.display = 'flex';
+}
+
+// Configurar modal de pagamento
+function configurarModalPagamento() {
+  // Fechar modal de pagamento
+  btnFecharModalPagamento.addEventListener('click', function() {
+    modalPagamento.style.display = 'none';
+    document.body.style.overflow = 'auto';
+  });
+  
+  // Fechar modal ao clicar fora
+  modalPagamento.addEventListener('click', function(e) {
+    if (e.target === modalPagamento) {
+      modalPagamento.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+  });
+  
+  // Copiar código PIX
+  btnCopiarPix.addEventListener('click', function() {
+    const codigoPix = document.getElementById('codigoPix').textContent;
+    
+    navigator.clipboard.writeText(codigoPix).then(() => {
+      btnCopiarPix.innerHTML = '<i class="fas fa-check"></i> Código Copiado!';
+      btnCopiarPix.classList.add('copiado');
+      
+      setTimeout(() => {
+        btnCopiarPix.innerHTML = '<i class="fas fa-copy"></i> Copiar Código PIX';
+        btnCopiarPix.classList.remove('copiado');
+      }, 3000);
+      
+      mostrarNotificacao('Código PIX copiado com sucesso!', 'sucesso');
+    }).catch(err => {
+      mostrarNotificacao('Erro ao copiar código PIX', 'erro');
+    });
+  });
+  
+  // Confirmar pagamento
+  btnConfirmarPagamento.addEventListener('click', function() {
+    // Obter dados do pedido atual
+    const numeroPedido = numeroPedidoSpan.textContent;
+    const total = carrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
+    
+    // Criar objeto do pedido
+    const pedido = {
+      numero: numeroPedido,
+      data: new Date().toISOString(),
+      itens: [...carrinho],
+      total: total,
+      status: 'finalizado',
+      statusAtendimento: 'pendente',
+      clienteNotificado: false
+    };
+    
+    // Salvar pedido na lista de pedidos finalizados
+    pedidosFinalizados.push(pedido);
+    salvarPedidosFinalizados();
+    renderizarPedidosAnteriores();
+    
+    // Limpar carrinho
+    carrinho = [];
+    salvarCarrinho();
+    atualizarBadgeCarrinho();
+    sincronizarControlesQuantidade();
+    
+    // Fechar modal
+    modalPagamento.style.display = 'none';
+    document.body.style.overflow = 'auto';
+    
+    // Mostrar mensagem de sucesso
+    mostrarNotificacao(`✅ Pedido ${numeroPedido} realizado com sucesso! Você pode consultar no carrinho.`, 'sucesso');
+  });
+  
+  // Cancelar pagamento
+  btnCancelarPagamento.addEventListener('click', function() {
+    modalPagamento.style.display = 'none';
+    document.body.style.overflow = 'auto';
+    mostrarNotificacao('Pagamento cancelado', 'info');
+  });
+}
+
+// Salvar carrinho no localStorage
+function salvarCarrinho() {
+  localStorage.setItem('carrinho', JSON.stringify(carrinho));
+}
+
+// Carregar carrinho do localStorage
+function carregarCarrinho() {
+  const carrinhoSalvo = localStorage.getItem('carrinho');
+  if (carrinhoSalvo) {
+    carrinho = JSON.parse(carrinhoSalvo);
+    atualizarBadgeCarrinho();
+    sincronizarControlesQuantidade();
+  }
+}
+
+// Salvar pedidos finalizados no localStorage
+function salvarPedidosFinalizados() {
+  localStorage.setItem('pedidosFinalizados', JSON.stringify(pedidosFinalizados));
+}
+
+// Carregar pedidos finalizados do localStorage
+function carregarPedidosFinalizados() {
+  const pedidosSalvos = localStorage.getItem('pedidosFinalizados');
+  if (pedidosSalvos) {
+    pedidosFinalizados = JSON.parse(pedidosSalvos);
+    renderizarPedidosAnteriores();
+  }
+}
+
+// Renderizar pedidos anteriores no carrinho
+function renderizarPedidosAnteriores() {
+  if (pedidosFinalizados.length === 0) {
+    listaPedidosDiv.style.display = 'none';
+    pedidosVazioDiv.style.display = 'flex';
+    return;
+  }
+  
+  listaPedidosDiv.style.display = 'flex';
+  pedidosVazioDiv.style.display = 'none';
+  listaPedidosDiv.innerHTML = '';
+  
+  // Mostrar todos os pedidos (mais recentes primeiro)
+  const pedidosOrdenados = [...pedidosFinalizados].reverse();
+  
+  pedidosOrdenados.forEach(pedido => {
+    const pedidoItem = document.createElement('div');
+    pedidoItem.className = 'pedido-item';
+    
+    const dataFormatada = new Date(pedido.data).toLocaleString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+    
+    // Obter informações do status
+    const statusInfo = obterStatusInfo(pedido.statusAtendimento || 'pendente');
+    
+    pedidoItem.innerHTML = `
+      <div class="pedido-header">
+        <span class="pedido-numero"><i class="fas fa-receipt"></i> ${pedido.numero}</span>
+        <span class="pedido-status-badge" style="background: ${statusInfo.cor}; color: ${statusInfo.corTexto};">${statusInfo.texto}</span>
+      </div>
+      <div class="pedido-info">
+        <p><i class="far fa-calendar"></i> ${dataFormatada}</p>
+        <p><i class="fas fa-shopping-bag"></i> ${pedido.itens.length} ${pedido.itens.length === 1 ? 'item' : 'itens'}</p>
+        <p class="pedido-total"><i class="fas fa-dollar-sign"></i> Total: R$ ${pedido.total.toFixed(2).replace('.', ',')}</p>
+      </div>
+    `;
+    
+    listaPedidosDiv.appendChild(pedidoItem);
+  });
+}
+
+// Função auxiliar para obter informações de status
+function obterStatusInfo(status) {
+  const statusMap = {
+    'pendente': { texto: '⏳ Pendente', cor: '#fff3cd', corTexto: '#856404' },
+    'preparando': { texto: '👨‍🍳 Preparando', cor: '#cfe2ff', corTexto: '#084298' },
+    'pronto': { texto: '✅ Pronto', cor: '#d1e7dd', corTexto: '#0a3622' },
+    'finalizado': { texto: '✓ Entregue', cor: '#e2e3e5', corTexto: '#41464b' }
+  };
+  
+  return statusMap[status] || statusMap['pendente'];
+}
+
+// Sincronizar controles de quantidade com o carrinho
+function sincronizarControlesQuantidade() {
+  // Resetar todos os cards primeiro
+  document.querySelectorAll('.area-selecao').forEach(area => {
+    area.style.display = 'none';
+  });
+  document.querySelectorAll('.btn-adicionar').forEach(btn => {
+    btn.style.display = 'block';
+  });
+}
+
+// Mostrar notificação
+function mostrarNotificacao(mensagem, tipo = 'sucesso') {
+  // Remover notificação anterior se existir
+  const notificacaoExistente = document.querySelector('.notificacao');
+  if (notificacaoExistente) {
+    notificacaoExistente.remove();
+  }
+  
+  // Criar nova notificação
+  const notificacao = document.createElement('div');
+  notificacao.className = `notificacao notificacao-${tipo}`;
+  notificacao.innerHTML = `
+    <i class="fas fa-${tipo === 'sucesso' ? 'check-circle' : 'exclamation-circle'}"></i>
+    <span>${mensagem}</span>
+  `;
+  
+  document.body.appendChild(notificacao);
+  
+  // Animar entrada
+  setTimeout(() => {
+    notificacao.classList.add('mostrar');
+  }, 10);
+  
+  // Remover após 3 segundos
+  setTimeout(() => {
+    notificacao.classList.remove('mostrar');
+    setTimeout(() => {
+      notificacao.remove();
+    }, 300);
+  }, 3000);
+}
+
+// ============================================
+// ACOMPANHAMENTO EM TEMPO REAL
+// ============================================
+
+function iniciarAcompanhamentoTempoReal() {
+  atualizarAcompanhamentoTempoReal();
+  
+  // Atualizar a cada 3 segundos
+  setInterval(atualizarAcompanhamentoTempoReal, 3000);
+}
+
+function atualizarAcompanhamentoTempoReal() {
+  const seusPedidosAtivosDiv = document.getElementById('seusPedidosAtivos');
+  const listaOutrosPedidosDiv = document.getElementById('listaOutrosPedidos');
+  const totalNaFilaSpan = document.getElementById('totalNaFila');
+  
+  // Obter todos os pedidos
+  const todosPedidos = pedidosFinalizados || [];
+  
+  // Filtrar pedidos ativos (pendentes, preparando ou prontos)
+  const pedidosAtivos = todosPedidos.filter(p => 
+    p.statusAtendimento === 'pendente' || 
+    p.statusAtendimento === 'preparando' ||
+    p.statusAtendimento === 'pronto'
+  );
+  
+  // Atualizar badge e mostrar/esconder conteúdo vazio
+  if (pedidosAtivos.length === 0) {
+    badgeAcompanhamento.style.display = 'none';
+    if (acompanhamentoVazioDiv) {
+      acompanhamentoVazioDiv.style.display = 'flex';
+    }
+    if (seusPedidosAtivosDiv) {
+      seusPedidosAtivosDiv.style.display = 'none';
+    }
+    document.querySelector('.fila-info').style.display = 'none';
+    document.querySelector('.outros-pedidos').style.display = 'none';
+    return;
+  }
+  
+  // Mostrar badge com contador
+  badgeAcompanhamento.textContent = pedidosAtivos.length;
+  badgeAcompanhamento.style.display = 'inline-block';
+  
+  // Mostrar conteúdo e esconder vazio
+  if (acompanhamentoVazioDiv) {
+    acompanhamentoVazioDiv.style.display = 'none';
+  }
+  if (seusPedidosAtivosDiv) {
+    seusPedidosAtivosDiv.style.display = 'flex';
+  }
+  document.querySelector('.fila-info').style.display = 'block';
+  document.querySelector('.outros-pedidos').style.display = 'block';
+  
+  // Ordenar por data (mais antigos primeiro = fila)
+  pedidosAtivos.sort((a, b) => new Date(a.data) - new Date(b.data));
+  
+  // Atualizar total na fila
+  totalNaFilaSpan.textContent = pedidosAtivos.length;
+  
+  // Separar seus pedidos dos outros
+  const seusPedidos = [];
+  const outrosPedidos = [];
+  
+  pedidosAtivos.forEach((pedido, index) => {
+    pedido.posicaoFila = index + 1;
+    seusPedidos.push(pedido); // Por enquanto, mostrar todos como "seus pedidos"
+  });
+  
+  // Renderizar seus pedidos
+  renderizarSeusPedidosAtivos(seusPedidos);
+  
+  // Renderizar outros pedidos em preparo
+  const pedidosEmPreparo = pedidosAtivos.filter(p => p.statusAtendimento === 'preparando');
+  renderizarOutrosPedidos(pedidosEmPreparo);
+}
+
+function renderizarSeusPedidosAtivos(pedidos) {
+  const seusPedidosAtivosDiv = document.getElementById('seusPedidosAtivos');
+  
+  if (pedidos.length === 0) {
+    seusPedidosAtivosDiv.innerHTML = '';
+    return;
+  }
+  
+  seusPedidosAtivosDiv.innerHTML = pedidos.map(pedido => {
+    const statusInfo = obterStatusInfoAcompanhamento(pedido.statusAtendimento);
+    const tempoDecorrido = calcularTempoDecorrido(pedido.data);
+    
+    // Calcular pedidos na frente (apenas se não estiver pronto)
+    const pedidosNaFrente = pedido.posicaoFila - 1;
+    
+    return `
+      <div class="card-pedido-ativo ${pedido.statusAtendimento}">
+        <div class="header-pedido-ativo">
+          <div class="numero-pedido-ativo">
+            <i class="fas fa-receipt"></i>
+            ${pedido.numero}
+          </div>
+          <div class="status-pedido-ativo" style="background: ${statusInfo.cor}; color: ${statusInfo.corTexto};">
+            ${statusInfo.icone} ${statusInfo.texto}
+          </div>
+        </div>
+        
+        <div class="info-pedido-ativo">
+          ${pedido.statusAtendimento !== 'pronto' ? `
+            <div class="posicao-fila">
+              <i class="fas fa-list-ol"></i>
+              <span>Posição na fila: <strong>${pedido.posicaoFila}º</strong></span>
+            </div>
+            
+            ${pedidosNaFrente > 0 ? `
+              <div class="pedidos-frente">
+                <i class="fas fa-users"></i>
+                <span><strong>${pedidosNaFrente}</strong> ${pedidosNaFrente === 1 ? 'pedido' : 'pedidos'} na sua frente</span>
+              </div>
+            ` : `
+              <div class="pedidos-frente destaque">
+                <i class="fas fa-star"></i>
+                <span>Seu pedido é o próximo!</span>
+              </div>
+            `}
+          ` : ''}
+          
+          <div class="tempo-pedido">
+            <i class="far fa-clock"></i>
+            <span>${tempoDecorrido}</span>
+          </div>
+          
+          <div class="itens-resumo">
+            <i class="fas fa-shopping-bag"></i>
+            <span>${pedido.itens.length} ${pedido.itens.length === 1 ? 'item' : 'itens'} - R$ ${pedido.total.toFixed(2).replace('.', ',')}</span>
+          </div>
+        </div>
+        
+        ${pedido.statusAtendimento === 'preparando' ? `
+          <div class="animacao-preparo">
+            <div class="spinner"></div>
+            <span>Preparando seu pedido...</span>
+          </div>
+        ` : ''}
+        
+        ${pedido.statusAtendimento === 'pronto' ? `
+          <div class="pedido-pronto-alerta">
+            <div class="icone-pronto">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="texto-pronto">
+              <h3>🎉 Seu Pedido está Pronto!</h3>
+              <p>Dirija-se ao balcão para retirar</p>
+            </div>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }).join('');
+}
+
+function renderizarOutrosPedidos(pedidos) {
+  const listaOutrosPedidosDiv = document.getElementById('listaOutrosPedidos');
+  
+  if (pedidos.length === 0) {
+    listaOutrosPedidosDiv.innerHTML = '<p class="sem-outros-pedidos">Nenhum pedido em preparo no momento</p>';
+    return;
+  }
+  
+  listaOutrosPedidosDiv.innerHTML = pedidos.map(pedido => {
+    return `
+      <div class="mini-card-pedido">
+        <span class="mini-numero">${pedido.numero}</span>
+        <span class="mini-status">
+          <div class="spinner-mini"></div>
+          Preparando
+        </span>
+      </div>
+    `;
+  }).join('');
+}
+
+function obterStatusInfoAcompanhamento(status) {
+  const statusMap = {
+    'pendente': { 
+      texto: 'Aguardando', 
+      icone: '⏳', 
+      cor: '#fff3cd', 
+      corTexto: '#856404' 
+    },
+    'preparando': { 
+      texto: 'Em Preparo', 
+      icone: '👨‍🍳', 
+      cor: '#cfe2ff', 
+      corTexto: '#084298' 
+    },
+    'pronto': { 
+      texto: 'Pronto!', 
+      icone: '✅', 
+      cor: '#d1e7dd', 
+      corTexto: '#0a3622' 
+    }
+  };
+  
+  return statusMap[status] || statusMap['pendente'];
+}
+
+function calcularTempoDecorrido(dataISO) {
+  const agora = new Date();
+  const dataPedido = new Date(dataISO);
+  const diff = Math.floor((agora - dataPedido) / 1000); // segundos
+  
+  if (diff < 60) {
+    return 'Agora mesmo';
+  } else if (diff < 3600) {
+    const minutos = Math.floor(diff / 60);
+    return `Há ${minutos} ${minutos === 1 ? 'minuto' : 'minutos'}`;
+  } else {
+    const horas = Math.floor(diff / 3600);
+    const minutos = Math.floor((diff % 3600) / 60);
+    return `Há ${horas}h${minutos}min`;
+  }
+}
+
+// ============================================
+// SISTEMA DE PRODUTOS DINÂMICOS
+// ============================================
+
+// Produtos padrão (hardcoded)
+const produtosPadrao = [
+  {
+    id: 'default-1',
+    nome: 'Burger Clássico',
+    categoria: 'comidas',
+    preco: '25.90',
+    descricao: 'Burger artesanal com carne bovina, queijo, alface e tomate',
+    imagem: 'img_produto/photo-1568901346375-23c9450c58cd.avif',
+    estoque: 999,
+    padrao: true
+  },
+  {
+    id: 'default-2',
+    nome: 'Pizza Margherita',
+    categoria: 'comidas',
+    preco: '35.90',
+    descricao: 'Pizza tradicional com molho de tomate, mussarela e manjericão',
+    imagem: 'img_produto/photo-1593560708920-61dd98c46a4e.avif',
+    estoque: 999,
+    padrao: true
+  },
+  {
+    id: 'default-3',
+    nome: 'Sanduíche Natural',
+    categoria: 'comidas',
+    preco: '18.90',
+    descricao: 'Sanduíche integral com frango, vegetais frescos e molho especial',
+    imagem: 'img_produto/photo-1528735602780-2552fd46c7af.avif',
+    estoque: 999,
+    padrao: true
+  },
+  {
+    id: 'default-4',
+    nome: 'Batata Frita',
+    categoria: 'comidas',
+    preco: '12.90',
+    descricao: 'Porção generosa de batatas fritas crocantes',
+    imagem: 'img_produto/photo-1595981267035-7b04ca84a82d.avif',
+    estoque: 999,
+    padrao: true
+  },
+  {
+    id: 'default-5',
+    nome: 'Suco Natural',
+    categoria: 'bebidas',
+    preco: '8.90',
+    descricao: 'Suco natural de frutas frescas',
+    imagem: 'img_produto/photo-1544145945-f90425340c7e.avif',
+    estoque: 999,
+    padrao: true
+  },
+  {
+    id: 'default-6',
+    nome: 'Refrigerante',
+    categoria: 'bebidas',
+    preco: '6.90',
+    descricao: 'Refrigerante gelado 350ml',
+    imagem: 'img_produto/photo-1497534446932-c925b458314e.avif',
+    estoque: 999,
+    padrao: true
+  }
+];
+
+// Carregar produtos do localStorage ou usar padrões
+function carregarProdutosCardapio() {
+  const produtosStorage = localStorage.getItem('produtosCardapio');
+  const produtosDeletadosStorage = localStorage.getItem('produtosDeletados');
+  
+  // Lista de produtos deletados permanentemente
+  const produtosDeletados = produtosDeletadosStorage ? JSON.parse(produtosDeletadosStorage) : [];
+  
+  if (produtosStorage) {
+    // Carregar todos os produtos salvos
+    produtosCardapio = JSON.parse(produtosStorage);
+  } else {
+    // Primeira vez: usar produtos padrão
+    produtosCardapio = [...produtosPadrao];
+  }
+  
+  // Filtrar produtos deletados permanentemente
+  produtosCardapio = produtosCardapio.filter(p => !produtosDeletados.includes(p.id));
+  
+  renderizarProdutosCardapio();
+}
+
+// Renderizar produtos no cardápio
+function renderizarProdutosCardapio() {
+  const sectionComidas = document.querySelector('.produtos.comidas');
+  const sectionBebidas = document.querySelector('.produtos.bebidas');
+  
+  if (!sectionComidas || !sectionBebidas) return;
+  
+  // Filtrar produtos por categoria
+  const comidas = produtosCardapio.filter(p => p.categoria === 'comidas');
+  const bebidas = produtosCardapio.filter(p => p.categoria === 'bebidas');
+  
+  // Renderizar comidas
+  sectionComidas.innerHTML = comidas.map(produto => criarCardProduto(produto)).join('');
+  
+  // Renderizar bebidas
+  sectionBebidas.innerHTML = bebidas.map(produto => criarCardProduto(produto)).join('');
+  
+  // Reconfigurar botões após renderizar
+  configurarBotoesAdicionar();
+}
+
+// Criar card de produto HTML
+function criarCardProduto(produto) {
+  const precoFormatado = parseFloat(produto.preco).toFixed(2).replace('.', ',');
+  
+  return `
+    <div class="card-produto" data-nome="${produto.nome}" data-preco="${produto.preco}" data-categoria="${produto.categoria}">
+      <img src="${produto.imagem}" alt="${produto.nome}" onerror="this.src='img_produto/placeholder.png'" />
+      <div class="info-produto">
+        <h3>${produto.nome}</h3>
+        <p>${produto.descricao}</p>
+        <div class="preco">R$ ${precoFormatado}</div>
+        <div class="produto-acoes">
+          <button class="btn-adicionar">Adicionar ao carrinho</button>
+          <div class="area-selecao" style="display: none;">
+            <div class="controle-quantidade-card">
+              <button class="btn-dim-card"><i class="fas fa-minus"></i></button>
+              <span class="qtd-card">1</span>
+              <button class="btn-aum-card"><i class="fas fa-plus"></i></button>
+            </div>
+            <button class="btn-adicionar-valor">
+              Adicionar <span class="valor-add">R$ 0,00</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}

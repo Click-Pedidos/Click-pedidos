@@ -13,9 +13,6 @@
   </head>
   <body>
     <header>
-      <div class="voltar">
-        <a href="../index.html"><i class="fas fa-arrow-left"></i> Voltar</a>
-      </div>
       <div class="logo">
         <img src="img_produto/logo.jpeg" alt="Click Pedido Logo" />
       </div>
@@ -27,12 +24,18 @@
           <h1>Nosso Cardápio</h1>
           <p>Escolha seus pratos e bebidas favoritos</p>
         </div>
-        <div class="nome-cliente">
-          <label for="nome">Seu nome:</label>
-          <input type="text" id="nome" placeholder="Digite seu nome" />
-          <a href="#" class="carrinho-btn">
+        <div class="carrinho-container">
+          <a href="#" class="acompanhar-btn" id="abrirAcompanhamento">
+            <i class="fas fa-clock"></i>
+            Acompanhar <span class="badge-acompanhamento" id="badgeAcompanhamento" style="display: none;">0</span>
+          </a>
+          <a href="#" class="pedidos-btn" id="abrirPedidos">
+            <i class="fas fa-receipt"></i>
+            Meus Pedidos
+          </a>
+          <a href="#" class="carrinho-btn" id="abrirCarrinho">
             <i class="fas fa-shopping-cart"></i>
-            Carrinho
+            Carrinho <span class="badge-carrinho" id="badgeCarrinho">0</span>
           </a>
         </div>
       </section>
@@ -49,7 +52,7 @@
       </section>
 
       <section class="produtos comidas active">
-        <div class="card-produto">
+        <div class="card-produto" data-nome="Burger Clássico" data-preco="25.90" data-categoria="comidas">
           <img
             src="img_produto/photo-1568901346375-23c9450c58cd.avif"
             alt="Burger Clássico"
@@ -58,11 +61,23 @@
             <h3>Burger Clássico</h3>
             <p>Burger artesanal com carne bovina, queijo, alface e tomate</p>
             <div class="preco">R$ 25,90</div>
-            <button>Adicionar ao carrinho</button>
+            <div class="produto-acoes">
+              <button class="btn-adicionar">Adicionar ao carrinho</button>
+              <div class="area-selecao" style="display: none;">
+                <div class="controle-quantidade-card">
+                  <button class="btn-dim-card"><i class="fas fa-minus"></i></button>
+                  <span class="qtd-card">1</span>
+                  <button class="btn-aum-card"><i class="fas fa-plus"></i></button>
+                </div>
+                <button class="btn-adicionar-valor">
+                  Adicionar <span class="valor-add">R$ 0,00</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="card-produto">
+        <div class="card-produto" data-nome="Pizza Margherita" data-preco="35.90" data-categoria="comidas">
           <img
             src="img_produto/photo-1593560708920-61dd98c46a4e.avif"
             alt="Pizza Margherita"
@@ -71,11 +86,23 @@
             <h3>Pizza Margherita</h3>
             <p>Pizza tradicional com molho de tomate, mussarela e manjericão</p>
             <div class="preco">R$ 35,90</div>
-            <button>Adicionar ao carrinho</button>
+            <div class="produto-acoes">
+              <button class="btn-adicionar">Adicionar ao carrinho</button>
+              <div class="area-selecao" style="display: none;">
+                <div class="controle-quantidade-card">
+                  <button class="btn-dim-card"><i class="fas fa-minus"></i></button>
+                  <span class="qtd-card">1</span>
+                  <button class="btn-aum-card"><i class="fas fa-plus"></i></button>
+                </div>
+                <button class="btn-adicionar-valor">
+                  Adicionar <span class="valor-add">R$ 0,00</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="card-produto">
+        <div class="card-produto" data-nome="Sanduíche Natural" data-preco="18.90" data-categoria="comidas">
           <img
             src="img_produto/photo-1528735602780-2552fd46c7af.avif"
             alt="Sanduíche Natural"
@@ -86,11 +113,23 @@
               Sanduíche integral com frango, vegetais frescos e molho especial
             </p>
             <div class="preco">R$ 18,90</div>
-            <button>Adicionar ao carrinho</button>
+            <div class="produto-acoes">
+              <button class="btn-adicionar">Adicionar ao carrinho</button>
+              <div class="area-selecao" style="display: none;">
+                <div class="controle-quantidade-card">
+                  <button class="btn-dim-card"><i class="fas fa-minus"></i></button>
+                  <span class="qtd-card">1</span>
+                  <button class="btn-aum-card"><i class="fas fa-plus"></i></button>
+                </div>
+                <button class="btn-adicionar-valor">
+                  Adicionar <span class="valor-add">R$ 0,00</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="card-produto">
+        <div class="card-produto" data-nome="Burger Clássico" data-preco="25.90" data-categoria="comidas">
           <img
             src="img_produto/photo-1568901346375-23c9450c58cd.avif"
             alt="Burger Clássico"
@@ -99,11 +138,23 @@
             <h3>Burger Clássico</h3>
             <p>Burger artesanal com carne bovina, queijo, alface e tomate</p>
             <div class="preco">R$ 25,90</div>
-            <button>Adicionar ao carrinho</button>
+            <div class="produto-acoes">
+              <button class="btn-adicionar">Adicionar ao carrinho</button>
+              <div class="area-selecao" style="display: none;">
+                <div class="controle-quantidade-card">
+                  <button class="btn-dim-card"><i class="fas fa-minus"></i></button>
+                  <span class="qtd-card">1</span>
+                  <button class="btn-aum-card"><i class="fas fa-plus"></i></button>
+                </div>
+                <button class="btn-adicionar-valor">
+                  Adicionar <span class="valor-add">R$ 0,00</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="card-produto">
+        <div class="card-produto" data-nome="Pizza Margherita" data-preco="35.90" data-categoria="comidas">
           <img
             src="img_produto/photo-1593560708920-61dd98c46a4e.avif"
             alt="Pizza Margherita"
@@ -112,11 +163,23 @@
             <h3>Pizza Margherita</h3>
             <p>Pizza tradicional com molho de tomate, mussarela e manjericão</p>
             <div class="preco">R$ 35,90</div>
-            <button>Adicionar ao carrinho</button>
+            <div class="produto-acoes">
+              <button class="btn-adicionar">Adicionar ao carrinho</button>
+              <div class="area-selecao" style="display: none;">
+                <div class="controle-quantidade-card">
+                  <button class="btn-dim-card"><i class="fas fa-minus"></i></button>
+                  <span class="qtd-card">1</span>
+                  <button class="btn-aum-card"><i class="fas fa-plus"></i></button>
+                </div>
+                <button class="btn-adicionar-valor">
+                  Adicionar <span class="valor-add">R$ 0,00</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="card-produto">
+        <div class="card-produto" data-nome="Sanduíche Natural" data-preco="18.90" data-categoria="comidas">
           <img
             src="img_produto/photo-1528735602780-2552fd46c7af.avif"
             alt="Sanduíche Natural"
@@ -127,13 +190,25 @@
               Sanduíche integral com frango, vegetais frescos e molho especial
             </p>
             <div class="preco">R$ 18,90</div>
-            <button>Adicionar ao carrinho</button>
+            <div class="produto-acoes">
+              <button class="btn-adicionar">Adicionar ao carrinho</button>
+              <div class="area-selecao" style="display: none;">
+                <div class="controle-quantidade-card">
+                  <button class="btn-dim-card"><i class="fas fa-minus"></i></button>
+                  <span class="qtd-card">1</span>
+                  <button class="btn-aum-card"><i class="fas fa-plus"></i></button>
+                </div>
+                <button class="btn-adicionar-valor">
+                  Adicionar <span class="valor-add">R$ 0,00</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       <section class="produtos bebidas">
-        <div class="card-produto">
+        <div class="card-produto" data-nome="Refrigerante" data-preco="5.90" data-categoria="bebidas">
           <img
             src="img_produto/photo-1544145945-f90425340c7e.avif"
             alt="Refrigerante"
@@ -142,11 +217,23 @@
             <h3>Refrigerante</h3>
             <p>Lata 350ml - Diversos sabores</p>
             <div class="preco">R$ 5,90</div>
-            <button>Adicionar ao carrinho</button>
+            <div class="produto-acoes">
+              <button class="btn-adicionar">Adicionar ao carrinho</button>
+              <div class="area-selecao" style="display: none;">
+                <div class="controle-quantidade-card">
+                  <button class="btn-dim-card"><i class="fas fa-minus"></i></button>
+                  <span class="qtd-card">1</span>
+                  <button class="btn-aum-card"><i class="fas fa-plus"></i></button>
+                </div>
+                <button class="btn-adicionar-valor">
+                  Adicionar <span class="valor-add">R$ 0,00</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="card-produto">
+        <div class="card-produto" data-nome="Suco Natural" data-preco="8.90" data-categoria="bebidas">
           <img
             src="img_produto/photo-1595981267035-7b04ca84a82d.avif"
             alt="Suco Natural"
@@ -155,11 +242,23 @@
             <h3>Suco Natural</h3>
             <p>Copo 300ml - Laranja, Limão, Abacaxi</p>
             <div class="preco">R$ 8,90</div>
-            <button>Adicionar ao carrinho</button>
+            <div class="produto-acoes">
+              <button class="btn-adicionar">Adicionar ao carrinho</button>
+              <div class="area-selecao" style="display: none;">
+                <div class="controle-quantidade-card">
+                  <button class="btn-dim-card"><i class="fas fa-minus"></i></button>
+                  <span class="qtd-card">1</span>
+                  <button class="btn-aum-card"><i class="fas fa-plus"></i></button>
+                </div>
+                <button class="btn-adicionar-valor">
+                  Adicionar <span class="valor-add">R$ 0,00</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="card-produto">
+        <div class="card-produto" data-nome="Água Mineral" data-preco="3.50" data-categoria="bebidas">
           <img
             src="img_produto/photo-1497534446932-c925b458314e.avif"
             alt="Água Mineral"
@@ -168,10 +267,22 @@
             <h3>Água Mineral</h3>
             <p>Garrafa 500ml - Com ou sem gás</p>
             <div class="preco">R$ 3,50</div>
-            <button>Adicionar ao carrinho</button>
+            <div class="produto-acoes">
+              <button class="btn-adicionar">Adicionar ao carrinho</button>
+              <div class="area-selecao" style="display: none;">
+                <div class="controle-quantidade-card">
+                  <button class="btn-dim-card"><i class="fas fa-minus"></i></button>
+                  <span class="qtd-card">1</span>
+                  <button class="btn-aum-card"><i class="fas fa-plus"></i></button>
+                </div>
+                <button class="btn-adicionar-valor">
+                  Adicionar <span class="valor-add">R$ 0,00</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="card-produto">
+        <div class="card-produto" data-nome="Refrigerante" data-preco="5.90" data-categoria="bebidas">
           <img
             src="img_produto/photo-1544145945-f90425340c7e.avif"
             alt="Refrigerante"
@@ -180,11 +291,23 @@
             <h3>Refrigerante</h3>
             <p>Lata 350ml - Diversos sabores</p>
             <div class="preco">R$ 5,90</div>
-            <button>Adicionar ao carrinho</button>
+            <div class="produto-acoes">
+              <button class="btn-adicionar">Adicionar ao carrinho</button>
+              <div class="area-selecao" style="display: none;">
+                <div class="controle-quantidade-card">
+                  <button class="btn-dim-card"><i class="fas fa-minus"></i></button>
+                  <span class="qtd-card">1</span>
+                  <button class="btn-aum-card"><i class="fas fa-plus"></i></button>
+                </div>
+                <button class="btn-adicionar-valor">
+                  Adicionar <span class="valor-add">R$ 0,00</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="card-produto">
+        <div class="card-produto" data-nome="Suco Natural" data-preco="8.90" data-categoria="bebidas">
           <img
             src="img_produto/photo-1595981267035-7b04ca84a82d.avif"
             alt="Suco Natural"
@@ -193,11 +316,23 @@
             <h3>Suco Natural</h3>
             <p>Copo 300ml - Laranja, Limão, Abacaxi</p>
             <div class="preco">R$ 8,90</div>
-            <button>Adicionar ao carrinho</button>
+            <div class="produto-acoes">
+              <button class="btn-adicionar">Adicionar ao carrinho</button>
+              <div class="area-selecao" style="display: none;">
+                <div class="controle-quantidade-card">
+                  <button class="btn-dim-card"><i class="fas fa-minus"></i></button>
+                  <span class="qtd-card">1</span>
+                  <button class="btn-aum-card"><i class="fas fa-plus"></i></button>
+                </div>
+                <button class="btn-adicionar-valor">
+                  Adicionar <span class="valor-add">R$ 0,00</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="card-produto">
+        <div class="card-produto" data-nome="Água Mineral" data-preco="3.50" data-categoria="bebidas">
           <img
             src="img_produto/photo-1497534446932-c925b458314e.avif"
             alt="Água Mineral"
@@ -206,49 +341,168 @@
             <h3>Água Mineral</h3>
             <p>Garrafa 500ml - Com ou sem gás</p>
             <div class="preco">R$ 3,50</div>
-            <button>Adicionar ao carrinho</button>
+            <div class="produto-acoes">
+              <button class="btn-adicionar">Adicionar ao carrinho</button>
+              <div class="area-selecao" style="display: none;">
+                <div class="controle-quantidade-card">
+                  <button class="btn-dim-card"><i class="fas fa-minus"></i></button>
+                  <span class="qtd-card">1</span>
+                  <button class="btn-aum-card"><i class="fas fa-plus"></i></button>
+                </div>
+                <button class="btn-adicionar-valor">
+                  Adicionar <span class="valor-add">R$ 0,00</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
     </main>
 
-    <script>
-      // JavaScript para alternar entre as abas
-      document.addEventListener("DOMContentLoaded", function () {
-        const tabBtns = document.querySelectorAll(".tab-btn");
-        const produtosSections = document.querySelectorAll(".produtos");
+    <!-- Modal do Carrinho -->
+    <div id="modalCarrinho" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2><i class="fas fa-shopping-cart"></i> Resumo do Pedido</h2>
+          <span class="fechar-modal" id="fecharModal">&times;</span>
+        </div>
+        <div class="modal-body">
+          <div id="itensCarrinho" class="itens-carrinho">
+            <!-- Itens do carrinho serão inseridos aqui -->
+          </div>
+          <div class="carrinho-vazio" id="carrinhoVazio">
+            <i class="fas fa-shopping-basket"></i>
+            <p>Seu carrinho está vazio</p>
+            <small>Adicione produtos para começar seu pedido</small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="resumo-total">
+            <div class="linha-total subtotal-linha">
+              <span>Subtotal:</span>
+              <span id="subtotalCarrinho">R$ 0,00</span>
+            </div>
+            <div class="linha-total total-linha">
+              <span>Total:</span>
+              <span id="totalCarrinho">R$ 0,00</span>
+            </div>
+          </div>
+          <button class="btn-finalizar" id="finalizarPedido">
+            <i class="fas fa-check-circle"></i> Finalizar Pedido
+          </button>
+        </div>
+      </div>
+    </div>
 
-        tabBtns.forEach((btn) => {
-          btn.addEventListener("click", function () {
-            const tab = this.dataset.tab;
+    <!-- Modal de Meus Pedidos -->
+    <div id="modalPedidos" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2><i class="fas fa-history"></i> Meus Pedidos</h2>
+          <span class="fechar-modal" id="fecharModalPedidos">&times;</span>
+        </div>
+        <div class="modal-body">
+          <div id="listaPedidos" class="lista-pedidos">
+            <!-- Pedidos finalizados serão inseridos aqui -->
+          </div>
+          <div class="pedidos-vazio" id="pedidosVazio">
+            <i class="fas fa-clipboard-list"></i>
+            <p>Você ainda não fez nenhum pedido</p>
+            <small>Seus pedidos finalizados aparecerão aqui</small>
+          </div>
+        </div>
+      </div>
+    </div>
 
-            // Remover classe active de TODOS os botões
-            tabBtns.forEach((btn) => btn.classList.remove("active"));
+    <!-- Modal de Pagamento PIX -->
+    <div id="modalPagamento" class="modal">
+      <div class="modal-content modal-pagamento">
+        <div class="modal-header">
+          <h2><i class="fas fa-qrcode"></i> Pagamento PIX</h2>
+          <span class="fechar-modal" id="fecharModalPagamento">&times;</span>
+        </div>
+        <div class="modal-body">
+          <div class="info-pagamento">
+            <div class="valor-pagar">
+              <p>Valor a pagar:</p>
+              <h3 id="valorPagamento">R$ 0,00</h3>
+            </div>
+            
+            <div class="instrucoes-pix">
+              <i class="fas fa-info-circle"></i>
+              <p>Copie o código PIX abaixo e cole no seu aplicativo de pagamento</p>
+            </div>
 
-            // Remover classe active de TODAS as seções de produtos
-            produtosSections.forEach((section) =>
-              section.classList.remove("active"),
-            );
+            <div class="codigo-pix-container">
+              <div class="codigo-pix" id="codigoPix">
+                00020126580014br.gov.bcb.pix0136123e4567-e12b-12d1-a456-4266554400005204000053039865802BR5913Click Pedidos6009SAO PAULO62070503***63041D3D
+              </div>
+              <button class="btn-copiar-pix" id="copiarPix">
+                <i class="fas fa-copy"></i> Copiar Código PIX
+              </button>
+            </div>
 
-            //  Adicionar classe active ao botão clicado
-            this.classList.add("active");
+            <div class="pedido-info">
+              <p><strong>Pedido:</strong> <span id="numeroPedido"></span></p>
+            </div>
 
-            //  CORREÇÃO AQUI: Adicionar classe active a APENAS A UMA seção correspondente
-            // Como agora só existe uma seção por aba (ex: .produtos.comidas), isso funciona.
-            document.querySelector(`.produtos.${tab}`).classList.add("active");
-          });
-        });
+            <div class="aviso-pagamento">
+              <i class="fas fa-clock"></i>
+              <p>Após realizar o pagamento, seu pedido será confirmado automaticamente</p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-confirmar-pagamento" id="confirmarPagamento">
+            <i class="fas fa-check-double"></i> Já realizei o pagamento
+          </button>
+          <button class="btn-cancelar-pagamento" id="cancelarPagamento">
+            <i class="fas fa-times"></i> Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
 
-        // CORREÇÃO: Define a aba inicial corretamente ao carregar a página
-        // A aba "Comidas" deve ser exibida, e a "Bebidas" oculta.
-        document.querySelector(".produtos.comidas").classList.add("active");
-        document.querySelector(".produtos.bebidas").classList.remove("active");
+    <!-- Modal de Acompanhamento em Tempo Real -->
+    <div id="modalAcompanhamento" class="modal">
+      <div class="modal-content modal-acompanhamento">
+        <div class="modal-header">
+          <h2><i class="fas fa-clock"></i> Acompanhamento em Tempo Real</h2>
+          <span class="fechar-modal" id="fecharModalAcompanhamento">&times;</span>
+        </div>
+        <div class="modal-body">
+          <div class="acompanhamento-container-modal">
+            <div class="pedidos-em-preparo">
+              <div class="fila-info">
+                <div class="total-fila">
+                  <span class="numero-fila" id="totalNaFila">0</span>
+                  <span class="texto-fila">pedidos na fila</span>
+                </div>
+              </div>
+              
+              <div class="seus-pedidos-ativos" id="seusPedidosAtivos">
+                <!-- Pedidos do cliente serão inseridos aqui -->
+              </div>
+              
+              <div class="outros-pedidos">
+                <h3>Pedidos em Preparo</h3>
+                <div class="lista-outros-pedidos" id="listaOutrosPedidos">
+                  <!-- Outros pedidos serão inseridos aqui -->
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="acompanhamento-vazio" id="acompanhamentoVazio">
+            <i class="fas fa-clipboard-check"></i>
+            <p>Nenhum pedido em preparo no momento</p>
+            <small>Seus pedidos ativos aparecerão aqui</small>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        // O botão "Comidas" já tem a classe 'active' no HTML, mas garantimos que "Bebidas" não tenha.
-        document
-          .querySelector('.tab-btn[data-tab="bebidas"]')
-          .classList.remove("active");
-      });
-    </script>
+
+    <script src="scripts/scriptsTelaProdutos.js"></script>
   </body>
 </html>
