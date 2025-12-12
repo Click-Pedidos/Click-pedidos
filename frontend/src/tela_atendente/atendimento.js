@@ -433,19 +433,25 @@ function carregarProdutos() {
   console.log('📦 Carregando produtos...');
   const produtosStorage = localStorage.getItem('produtosCardapio');
   const produtosDeletadosStorage = localStorage.getItem('produtosDeletados');
+  const primeiraInicializacao = localStorage.getItem('sistemaInicializado');
   
   // Lista de IDs de produtos deletados permanentemente
   const produtosDeletados = produtosDeletadosStorage ? JSON.parse(produtosDeletadosStorage) : [];
   
   if (produtosStorage) {
-    // Se já existe lista salva, usar ela (inclui padrão + customizados)
+    // SEMPRE carregar do localStorage se existir (mantém todas as edições)
     produtos = JSON.parse(produtosStorage);
-    console.log('✅ Produtos carregados do localStorage:', produtos.length);
-  } else {
-    // Primeira vez: inicializar com produtos padrão e salvar
+    console.log('✅ Produtos carregados do localStorage (com edições mantidas):', produtos.length);
+  } else if (!primeiraInicializacao) {
+    // APENAS na primeira vez: inicializar com produtos padrão
     produtos = [...produtosPadrao];
     salvarProdutos();
-    console.log('✅ Produtos padrão inicializados:', produtos.length);
+    localStorage.setItem('sistemaInicializado', 'true');
+    console.log('✅ Primeira inicialização - Produtos padrão salvos:', produtos.length);
+  } else {
+    // Sistema já foi inicializado mas não há produtos (usuário limpou)
+    produtos = [];
+    console.log('⚠️ Nenhum produto encontrado');
   }
   
   // Filtrar produtos deletados permanentemente
