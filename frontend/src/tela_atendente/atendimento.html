@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Click Pedidos - Atendimento</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <i class="fas fa-shopping-cart logo-icon"></i>
+      <h1 class="logo-title">CLICK PEDIDOS</h1>
+    </div>
+  </header>
+
+  <nav class="menu">
+    <button class="menu-btn ativo">
+      <i class="fas fa-clipboard-list"></i>
+      Pedidos
+    </button>
+    <button class="menu-btn">
+      <i class="fas fa-pizza-slice"></i>
+      Produtos
+    </button>
+    <button class="menu-btn">
+      <i class="fas fa-boxes"></i>
+      Estoque
+    </button>
+  </nav>
+
+  <main>
+    <section class="painel">
+      <h2>Painel de Pedidos</h2>
+      <div class="filtros">
+        <button class="ativo">Todos (0)</button>
+        <button>Pendentes (0)</button>
+        <button>Preparando (0)</button>
+        <button>Prontos (0)</button>
+        <button>Finalizados (0)</button>
+      </div>
+
+      <!-- Os pedidos serão carregados dinamicamente via JavaScript -->
+    </section>
+  </main>
+
+  <script src="atendimento.js"></script>
+</body>
+</html>
+

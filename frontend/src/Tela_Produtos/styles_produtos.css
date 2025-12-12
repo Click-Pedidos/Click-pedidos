@@ -616,8 +616,16 @@ header {
     width: 100%;
   }
 
+  .carrinho-container {
+    flex-wrap: wrap;
+  }
+
+  .pedidos-btn,
   .carrinho-btn {
-    width: 100%;
+    flex: 1;
+    min-width: 120px;
+    font-size: 0.85rem;
+    padding: 8px 12px;
   }
 
   /* Tabs */
@@ -1152,6 +1160,14 @@ button:hover {
   border-radius: 12px;
   font-size: 0.75rem;
   font-weight: 600;
+}
+
+.pedido-status-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  display: inline-block;
 }
 
 .pedido-info {

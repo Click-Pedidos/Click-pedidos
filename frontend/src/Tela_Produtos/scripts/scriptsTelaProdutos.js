@@ -51,6 +51,14 @@ document.addEventListener("DOMContentLoaded", function () {
   
   // Carregar pedidos finalizados
   carregarPedidosFinalizados();
+  
+  // Escutar mudanças do localStorage em outras abas/janelas (atendimento)
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'pedidosFinalizados') {
+      carregarPedidosFinalizados();
+      renderizarPedidosAnteriores();
+    }
+  });
 });
 
 // Configurar navegação entre abas
@@ -437,7 +445,9 @@ function configurarModalPagamento() {
       data: new Date().toISOString(),
       itens: [...carrinho],
       total: total,
-      status: 'finalizado'
+      status: 'finalizado',
+      statusAtendimento: 'pendente',
+      clienteNotificado: false
     };
     
     // Salvar pedido na lista de pedidos finalizados
@@ -523,10 +533,13 @@ function renderizarPedidosAnteriores() {
       minute: '2-digit'
     });
     
+    // Obter informações do status
+    const statusInfo = obterStatusInfo(pedido.statusAtendimento || 'pendente');
+    
     pedidoItem.innerHTML = `
       <div class="pedido-header">
         <span class="pedido-numero"><i class="fas fa-receipt"></i> ${pedido.numero}</span>
-        <span class="pedido-status">Finalizado</span>
+        <span class="pedido-status-badge" style="background: ${statusInfo.cor}; color: ${statusInfo.corTexto};">${statusInfo.texto}</span>
       </div>
       <div class="pedido-info">
         <p><i class="far fa-calendar"></i> ${dataFormatada}</p>
@@ -537,6 +550,18 @@ function renderizarPedidosAnteriores() {
     
     listaPedidosDiv.appendChild(pedidoItem);
   });
+}
+
+// Função auxiliar para obter informações de status
+function obterStatusInfo(status) {
+  const statusMap = {
+    'pendente': { texto: '⏳ Pendente', cor: '#fff3cd', corTexto: '#856404' },
+    'preparando': { texto: '👨‍🍳 Preparando', cor: '#cfe2ff', corTexto: '#084298' },
+    'pronto': { texto: '✅ Pronto', cor: '#d1e7dd', corTexto: '#0a3622' },
+    'finalizado': { texto: '✓ Entregue', cor: '#e2e3e5', corTexto: '#41464b' }
+  };
+  
+  return statusMap[status] || statusMap['pendente'];
 }
 
 // Sincronizar controles de quantidade com o carrinho
