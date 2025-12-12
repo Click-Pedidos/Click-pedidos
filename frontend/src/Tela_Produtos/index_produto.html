@@ -28,6 +28,10 @@
           <p>Escolha seus pratos e bebidas favoritos</p>
         </div>
         <div class="carrinho-container">
+          <a href="#" class="pedidos-btn" id="abrirPedidos">
+            <i class="fas fa-receipt"></i>
+            Meus Pedidos
+          </a>
           <a href="#" class="carrinho-btn" id="abrirCarrinho">
             <i class="fas fa-shopping-cart"></i>
             Carrinho <span class="badge-carrinho" id="badgeCarrinho">0</span>
@@ -385,6 +389,26 @@
           <button class="btn-finalizar" id="finalizarPedido">
             <i class="fas fa-check-circle"></i> Finalizar Pedido
           </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Meus Pedidos -->
+    <div id="modalPedidos" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2><i class="fas fa-history"></i> Meus Pedidos</h2>
+          <span class="fechar-modal" id="fecharModalPedidos">&times;</span>
+        </div>
+        <div class="modal-body">
+          <div id="listaPedidos" class="lista-pedidos">
+            <!-- Pedidos finalizados serão inseridos aqui -->
+          </div>
+          <div class="pedidos-vazio" id="pedidosVazio">
+            <i class="fas fa-clipboard-list"></i>
+            <p>Você ainda não fez nenhum pedido</p>
+            <small>Seus pedidos finalizados aparecerão aqui</small>
+          </div>
         </div>
       </div>
     </div>

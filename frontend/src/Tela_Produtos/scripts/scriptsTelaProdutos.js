@@ -1,5 +1,6 @@
 // Carrinho de compras
 let carrinho = [];
+let pedidosFinalizados = [];
 
 // Elementos DOM
 const modal = document.getElementById('modalCarrinho');
@@ -10,6 +11,13 @@ const itensCarrinhoDiv = document.getElementById('itensCarrinho');
 const carrinhoVazioDiv = document.getElementById('carrinhoVazio');
 const totalCarrinhoSpan = document.getElementById('totalCarrinho');
 const btnFinalizarPedido = document.getElementById('finalizarPedido');
+
+// Elementos do modal de pedidos
+const modalPedidos = document.getElementById('modalPedidos');
+const btnAbrirPedidos = document.getElementById('abrirPedidos');
+const btnFecharModalPedidos = document.getElementById('fecharModalPedidos');
+const listaPedidosDiv = document.getElementById('listaPedidos');
+const pedidosVazioDiv = document.getElementById('pedidosVazio');
 
 // Elementos do modal de pagamento
 const modalPagamento = document.getElementById('modalPagamento');
@@ -32,11 +40,17 @@ document.addEventListener("DOMContentLoaded", function () {
   // Configurar modal
   configurarModal();
   
+  // Configurar modal de pedidos
+  configurarModalPedidos();
+  
   // Configurar modal de pagamento
   configurarModalPagamento();
   
   // Carregar carrinho do localStorage
   carregarCarrinho();
+  
+  // Carregar pedidos finalizados
+  carregarPedidosFinalizados();
 });
 
 // Configurar navegação entre abas
@@ -329,6 +343,31 @@ function configurarModal() {
   btnFinalizarPedido.addEventListener('click', finalizarPedido);
 }
 
+// Configurar modal de pedidos
+function configurarModalPedidos() {
+  // Abrir modal
+  btnAbrirPedidos.addEventListener('click', function(e) {
+    e.preventDefault();
+    renderizarPedidosAnteriores();
+    modalPedidos.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  });
+  
+  // Fechar modal
+  btnFecharModalPedidos.addEventListener('click', function() {
+    modalPedidos.style.display = 'none';
+    document.body.style.overflow = 'auto';
+  });
+  
+  // Fechar modal ao clicar fora
+  modalPedidos.addEventListener('click', function(e) {
+    if (e.target === modalPedidos) {
+      modalPedidos.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+  });
+}
+
 // Finalizar pedido
 function finalizarPedido() {
   if (carrinho.length === 0) {
@@ -388,6 +427,24 @@ function configurarModalPagamento() {
   
   // Confirmar pagamento
   btnConfirmarPagamento.addEventListener('click', function() {
+    // Obter dados do pedido atual
+    const numeroPedido = numeroPedidoSpan.textContent;
+    const total = carrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
+    
+    // Criar objeto do pedido
+    const pedido = {
+      numero: numeroPedido,
+      data: new Date().toISOString(),
+      itens: [...carrinho],
+      total: total,
+      status: 'finalizado'
+    };
+    
+    // Salvar pedido na lista de pedidos finalizados
+    pedidosFinalizados.push(pedido);
+    salvarPedidosFinalizados();
+    renderizarPedidosAnteriores();
+    
     // Limpar carrinho
     carrinho = [];
     salvarCarrinho();
@@ -399,7 +456,7 @@ function configurarModalPagamento() {
     document.body.style.overflow = 'auto';
     
     // Mostrar mensagem de sucesso
-    mostrarNotificacao('✅ Pedido realizado com sucesso! Aguarde a confirmação.', 'sucesso');
+    mostrarNotificacao(`✅ Pedido ${numeroPedido} realizado com sucesso! Você pode consultar no carrinho.`, 'sucesso');
   });
   
   // Cancelar pagamento
@@ -423,6 +480,63 @@ function carregarCarrinho() {
     atualizarBadgeCarrinho();
     sincronizarControlesQuantidade();
   }
+}
+
+// Salvar pedidos finalizados no localStorage
+function salvarPedidosFinalizados() {
+  localStorage.setItem('pedidosFinalizados', JSON.stringify(pedidosFinalizados));
+}
+
+// Carregar pedidos finalizados do localStorage
+function carregarPedidosFinalizados() {
+  const pedidosSalvos = localStorage.getItem('pedidosFinalizados');
+  if (pedidosSalvos) {
+    pedidosFinalizados = JSON.parse(pedidosSalvos);
+    renderizarPedidosAnteriores();
+  }
+}
+
+// Renderizar pedidos anteriores no carrinho
+function renderizarPedidosAnteriores() {
+  if (pedidosFinalizados.length === 0) {
+    listaPedidosDiv.style.display = 'none';
+    pedidosVazioDiv.style.display = 'flex';
+    return;
+  }
+  
+  listaPedidosDiv.style.display = 'flex';
+  pedidosVazioDiv.style.display = 'none';
+  listaPedidosDiv.innerHTML = '';
+  
+  // Mostrar todos os pedidos (mais recentes primeiro)
+  const pedidosOrdenados = [...pedidosFinalizados].reverse();
+  
+  pedidosOrdenados.forEach(pedido => {
+    const pedidoItem = document.createElement('div');
+    pedidoItem.className = 'pedido-item';
+    
+    const dataFormatada = new Date(pedido.data).toLocaleString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+    
+    pedidoItem.innerHTML = `
+      <div class="pedido-header">
+        <span class="pedido-numero"><i class="fas fa-receipt"></i> ${pedido.numero}</span>
+        <span class="pedido-status">Finalizado</span>
+      </div>
+      <div class="pedido-info">
+        <p><i class="far fa-calendar"></i> ${dataFormatada}</p>
+        <p><i class="fas fa-shopping-bag"></i> ${pedido.itens.length} ${pedido.itens.length === 1 ? 'item' : 'itens'}</p>
+        <p class="pedido-total"><i class="fas fa-dollar-sign"></i> Total: R$ ${pedido.total.toFixed(2).replace('.', ',')}</p>
+      </div>
+    `;
+    
+    listaPedidosDiv.appendChild(pedidoItem);
+  });
 }
 
 // Sincronizar controles de quantidade com o carrinho
